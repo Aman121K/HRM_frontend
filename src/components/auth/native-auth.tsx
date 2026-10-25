@@ -252,14 +252,26 @@ function AuthFrame({ eyebrow, title, lead, brand, children }: { eyebrow: string;
   );
 }
 
+/**
+ * One-time tokens taken from the URL, kept in memory for this page load. The effect below can run more than once for
+ * the same page (React Strict Mode, remounts); after the first run the token is gone from the address bar, so later
+ * runs must reuse the value read the first time instead of concluding there is no token.
+ */
+const urlTokens = new Map<string, string>();
+
 /** Reads a one-time token from the URL once, then removes it from the address bar and history. */
 function useUrlToken(name: string) {
   const [token, setToken] = useState<string | null | undefined>(undefined);
   useEffect(() => {
+    const key = `${window.location.pathname}:${name}`;
     const params = new URLSearchParams(window.location.search);
     const value = params.get(name);
-    setToken(value);
-    if (value) { params.delete(name); window.history.replaceState(null, "", `${window.location.pathname}${params.size ? `?${params}` : ""}`); }
+    if (value) {
+      urlTokens.set(key, value);
+      params.delete(name);
+      window.history.replaceState(null, "", `${window.location.pathname}${params.size ? `?${params}` : ""}`);
+    }
+    setToken(value || urlTokens.get(key) || null);
   }, [name]);
   return token;
 }

@@ -1,5 +1,5 @@
 "use client";
-import { AlertTriangle, ArrowRight, Building2, Check, Copy, Link as LinkIcon, Pencil, Plus, Power, SlidersHorizontal, UserPlus, Users, X } from "lucide-react";
+import { AlertTriangle, ArrowRight, Building2, Check, Copy, Link as LinkIcon, Pencil, Plus, Power, Send, SlidersHorizontal, UserPlus, Users, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { httpRequest } from "@/lib/http-client";
 import { loadMyOrgs, switchOrganization, type OrgSummary } from "@/lib/org";
@@ -40,7 +40,7 @@ export function PlatformConsole() {
   useEffect(() => { loadMyOrgs().then((mine) => setMemberships(new Map(mine.organizations.map((org) => [org.id, org])))).catch(() => {}); }, []);
   const load = useCallback(() => httpRequest<Listing>("/api/v2/platform/orgs").then(setData).catch((reason) => setError(reason.message)), []);
   useEffect(() => { load(); }, [load]);
-  const flash = (message: string) => { setToast(message); window.setTimeout(() => setToast(""), 4000); };
+  const flash = (message: string) => { setToast(message); window.setTimeout(() => setToast(""), message.length > 80 ? 10000 : 4000); };
   const toggleStatus = async (org: PlatformOrg) => {
     const status = org.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE";
     if (status === "SUSPENDED" && !window.confirm(`Suspend ${org.shortName}? Its people won't be able to use Northstar until it's reactivated.`)) return;
@@ -103,8 +103,26 @@ export function PlatformConsole() {
   );
 }
 
-type Admin = { userId: string; email: string; fullName: string; employeeNumber: string | null; designation: string | null; role: string; lastSignInAt: string | null; ssoLinked: boolean };
+type Admin = { userId: string; email: string; fullName: string; employeeNumber: string | null; designation: string | null; role: string; lastSignInAt: string | null; ssoLinked: boolean;
+  hasPassword?: boolean; invitedAt?: string | null; inviteExpiresAt?: string | null; inviteAcceptedAt?: string | null };
 const ADMIN_ROLES: Record<string, string> = { OWNER: "Owner", HR_ADMIN: "HR admin", PAYROLL_ADMIN: "Payroll admin" };
+
+/** Emails the set-up-your-account link to a brand admin. Returns a sentence for the notice / toast. */
+async function sendAdminInvite(orgId: string, userId: string, name: string) {
+  try {
+    const result = await httpRequest<{ invited: boolean; alreadyActive?: boolean; email: string }>(`/api/v2/platform/auth/orgs/${orgId}/users/${userId}/invite`, { method: "POST", body: {} });
+    return result.alreadyActive ? `${name} already has a Northstar login and can sign in right away.` : `An invitation to set a password was emailed to ${result.email} (valid for 72 hours).`;
+  } catch (reason) {
+    return `The invitation email couldn't be sent (${reason instanceof Error ? reason.message : "unknown error"}). Use "Send invite" under Edit → Administrators to try again.`;
+  }
+}
+
+function adminAccess(admin: Admin): { label: string; tone: string; canInvite: boolean } {
+  if (admin.hasPassword || admin.ssoLinked) return { label: admin.lastSignInAt ? "Signed in" : "Login ready", tone: "tone-success", canInvite: false };
+  if (admin.invitedAt && !admin.inviteAcceptedAt && admin.inviteExpiresAt && new Date(admin.inviteExpiresAt) > new Date()) return { label: "Invite sent", tone: "tone-info", canInvite: true };
+  if (admin.invitedAt && !admin.inviteAcceptedAt) return { label: "Invite expired", tone: "tone-danger", canInvite: true };
+  return { label: "Not invited", tone: "tone-danger", canInvite: true };
+}
 
 /** Super admin edits any brand: identity and look, statutory defaults, its administrators and its own sign-in link. */
 function EditBrandDrawer({ org, onClose, onSaved }: { org: PlatformOrg; onClose: () => void; onSaved: (message: string) => void }) {
@@ -136,10 +154,14 @@ function EditBrandDrawer({ org, onClose, onSaved }: { org: PlatformOrg; onClose:
     if (!invite.fullName.trim() || !invite.workEmail.trim()) { setError("Enter the administrator's name and work email."); return; }
     setError("");
     try {
-      const added = await httpRequest<{ employeeNumber: string }>(`/api/v2/platform/orgs/${org.id}/admins`, { method: "POST", body: invite });
-      setNotice(`${invite.fullName} added as ${ADMIN_ROLES[invite.role]} (${added.employeeNumber}). Share the sign-in link above with them.`);
+      const added = await httpRequest<{ employeeNumber: string; userId: string }>(`/api/v2/platform/orgs/${org.id}/admins`, { method: "POST", body: invite });
+      const invited = await sendAdminInvite(org.id, added.userId, invite.fullName);
+      setNotice(`${invite.fullName} added as ${ADMIN_ROLES[invite.role]} (${added.employeeNumber}). ${invited}`);
       setInvite({ fullName: "", workEmail: "", role: "HR_ADMIN" }); loadAdmins();
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Couldn't add the administrator."); }
+  };
+  const resend = async (admin: Admin) => {
+    setError(""); setNotice(await sendAdminInvite(org.id, admin.userId, admin.fullName)); loadAdmins();
   };
   return (
     <>
@@ -176,12 +198,16 @@ function EditBrandDrawer({ org, onClose, onSaved }: { org: PlatformOrg; onClose:
           </div>
           <p className="cw-section-label">Administrators</p>
           <div className="pc-admins">
-            {!admins ? <div className="cw-list-skeleton"><i /></div> : admins.map((admin) => (
-              <div key={admin.userId} className="ns-device">
-                <span><b>{admin.fullName}</b><small>{admin.email}{admin.employeeNumber ? ` · ${admin.employeeNumber}` : ""}{admin.ssoLinked ? " · SSO linked" : ""}</small></span>
-                <span className="cw-badge tone-info"><i />{ADMIN_ROLES[admin.role] || admin.role}</span>
-              </div>
-            ))}
+            {!admins ? <div className="cw-list-skeleton"><i /></div> : admins.map((admin) => {
+              const access = adminAccess(admin);
+              return (
+                <div key={admin.userId} className="ns-device">
+                  <span><b>{admin.fullName}</b><small>{ADMIN_ROLES[admin.role] || admin.role} · {admin.email}{admin.employeeNumber ? ` · ${admin.employeeNumber}` : ""}{admin.ssoLinked ? " · SSO linked" : ""}</small></span>
+                  <span className={`cw-badge ${access.tone}`}><i />{access.label}</span>
+                  {access.canInvite && <button type="button" className="cw-btn ghost" onClick={() => resend(admin)}><Send size={13} /> {admin.invitedAt ? "Resend invite" : "Send invite"}</button>}
+                </div>
+              );
+            })}
             <div className="pc-invite">
               <input placeholder="Full name" value={invite.fullName} onChange={(event) => setInvite({ ...invite, fullName: event.target.value })} aria-label="Administrator name" />
               <input placeholder="work@brand.com" type="email" value={invite.workEmail} onChange={(event) => setInvite({ ...invite, workEmail: event.target.value })} aria-label="Administrator email" />
@@ -252,7 +278,7 @@ function CreateBrandDrawer({ groups, modules, onClose, onCreated }: { groups: Li
   const submit = async (event: React.FormEvent) => {
     event.preventDefault(); setBusy(true); setError("");
     try {
-      const result = await httpRequest<{ id: string; slug: string; admin: { employeeNumber: string; email: string } }>("/api/v2/platform/orgs", {
+      const result = await httpRequest<{ id: string; slug: string; admin: { employeeNumber: string; email: string; userId: string } }>("/api/v2/platform/orgs", {
         method: "POST", body: {
           displayName: form.displayName.trim(), slug: form.slug, legalName: form.legalName || undefined, shortName: form.shortName || undefined, industry: form.industry || undefined,
           defaultState: form.defaultState, employeePrefix: form.employeePrefix, brandColor: form.brandColor, accentColor: form.accentColor, logoDataUrl: logo || undefined,
@@ -260,7 +286,8 @@ function CreateBrandDrawer({ groups, modules, onClose, onCreated }: { groups: Li
           admin: { fullName: form.adminName, workEmail: form.adminEmail, designation: "HR Administrator" },
         },
       });
-      onCreated(`${form.displayName} is live. HR admin ${form.adminName} (${result.admin.employeeNumber}) can sign in with ${result.admin.email}.`);
+      const invited = await sendAdminInvite(result.id, result.admin.userId, form.adminName);
+      onCreated(`${form.displayName} is live at ${result.slug}.${APP_DOMAIN}. HR admin ${form.adminName} is ${result.admin.employeeNumber}. ${invited}`);
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Couldn't create the brand."); }
     finally { setBusy(false); }
   };

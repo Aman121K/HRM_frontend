@@ -3424,3 +3424,4 @@ body textarea {
   font-size: var(--type-page-title);
   line-height: var(--leading-tight);
 }
+.import-tips{max-width:620px;margin:16px auto 0;padding:0 0 0 18px;text-align:left;color:var(--muted);font-size:12px;line-height:1.7}.import-tips b{color:var(--ink)}.import-invites{max-width:520px;margin:14px 0 4px;display:grid;justify-items:center;gap:10px}.import-invites p{color:var(--muted);margin:0}
