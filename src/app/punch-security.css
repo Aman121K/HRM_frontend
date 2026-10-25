@@ -1,0 +1,51 @@
+/* HR head punch security: device binding, office network, router MAC and the device register. */
+.ps { margin: 18px 0; padding: 20px; background: var(--paper); border: 1px solid var(--line); }
+.ps > header { display: flex; gap: 16px; justify-content: space-between; align-items: start; margin-bottom: 14px; }
+.ps h2 { display: flex; gap: 8px; align-items: center; margin: 2px 0 6px; font: 700 19px/1.25 var(--font-app); }
+.ps > header p:last-child { margin: 0; color: var(--muted); max-width: 72ch; line-height: 1.5; }
+.ps-saved { display: inline-flex; gap: 5px; align-items: center; color: #1f7a4f; font-weight: 650; font-size: var(--type-label); white-space: nowrap; }
+.ps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 12px; }
+.ps-card { display: grid; gap: 10px; align-content: start; padding: 16px; border: 1px solid var(--line); background: #fbfbf9; }
+.ps-card.on { border-color: #1d4b5c; background: white; box-shadow: inset 0 0 0 1px #1d4b5c; }
+.ps-card h3 { display: flex; gap: 8px; align-items: center; margin: 0; font-size: 15px; }
+.ps-card > p { margin: 0; color: var(--muted); font-size: var(--type-label); line-height: 1.5; }
+.ps-card > p b { color: var(--ink); }
+.ps-modes { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); background: white; }
+.ps-modes button { padding: 8px 6px; border: 0; border-right: 1px solid var(--line); background: transparent; font: 650 12px/1.2 var(--font-app); color: var(--muted); cursor: pointer; }
+.ps-modes button:last-child { border-right: 0; }
+.ps-modes button:focus-visible { outline: 2px solid #1d4b5c; outline-offset: -2px; }
+.ps-modes button.active.m-off { background: #eef0ee; color: var(--ink); }
+.ps-modes button.active.m-flag { background: #faf1dc; color: #7d560f; }
+.ps-modes button.active.m-block { background: #1d4b5c; color: white; }
+.ps-sub { display: grid; gap: 8px; }
+.ps-sub label { display: grid; gap: 4px; font-size: var(--type-caption); font-weight: 650; color: var(--muted); }
+.ps-sub select, .ps-add input { width: 100%; padding: 8px 10px; border: 1px solid var(--line); background: white; font: inherit; font-size: 13px; color: var(--ink); min-width: 0; }
+.ps-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.ps-list:empty { display: none; }
+.ps-list li { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; padding: 6px 8px; background: #f2f5f4; font-size: 12px; }
+.ps-list code { font-weight: 700; color: #1d4b5c; }
+.ps-list span { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ps-list button { border: 0; background: transparent; color: var(--muted); cursor: pointer; padding: 2px; display: grid; }
+.ps-list button:hover { color: #a2402f; }
+.ps-add { display: grid; grid-template-columns: 1.2fr 1fr auto; gap: 6px; }
+.ps-hint { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.ps-hint code { font-weight: 700; color: var(--ink); }
+.ps-link { border: 0; background: none; padding: 0; color: #1d4b5c; font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
+.ps-devices { margin-top: 18px; }
+.ps-devices > header { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 8px; }
+.ps-devices h3 { margin: 0; font-size: 15px; display: flex; gap: 8px; align-items: center; }
+.ps-count { padding: 2px 8px; background: #faf1dc; color: #7d560f; font-size: 12px; }
+.ps-table { display: grid; border: 1px solid var(--line); }
+.ps-row { display: grid; grid-template-columns: minmax(150px, 1fr) minmax(190px, 1.3fr) minmax(120px, 1fr) auto; gap: 12px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+.ps-row:last-child { border-bottom: 0; }
+.ps-row.pending { background: #fffaf0; }
+.ps-who, .ps-dev > span { display: grid; gap: 2px; min-width: 0; }
+.ps-who small, .ps-dev small, .ps-note { color: var(--muted); font-size: 12px; }
+.ps-dev { display: flex; gap: 8px; align-items: center; min-width: 0; }
+.ps-actions { display: flex; gap: 6px; justify-content: flex-end; }
+
+@media (max-width: 800px) {
+  .ps { padding: 16px; } .ps > header { flex-direction: column; }
+  .ps-add { grid-template-columns: 1fr; }
+  .ps-row { grid-template-columns: 1fr; gap: 6px; } .ps-actions { justify-content: flex-start; }
+}

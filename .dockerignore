@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+node_modules
+**/node_modules
+.next
+out
+.git
+.github
+*.log
+*.tsbuildinfo
+.DS_Store
+Dockerfile*

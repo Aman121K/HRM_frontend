@@ -1,0 +1,67 @@
+/* First-party sign-in: password form, MFA steps, activation, reset, My security, HR access panel. */
+.na-form { display: grid; gap: 14px; }
+.na-field { display: grid; gap: 6px; }
+.na-field > span { display: flex; justify-content: space-between; gap: 8px; font: 750 var(--type-label) var(--font-app); color: var(--ink); }
+.na-field > span a { font-weight: 700; color: var(--muted); text-decoration: none; }
+.na-field > span a:hover { color: var(--accent, var(--teal)); text-decoration: underline; }
+.na-field input { width: 100%; min-width: 0; padding: 12px 13px; border: 1px solid #cbd5d1; background: white; font: 500 var(--type-body) var(--font-app); color: var(--ink); outline: 0; border-radius: 0; }
+.na-field input:focus { border-color: var(--accent, var(--teal)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent, #0b615c) 16%, transparent); }
+.na-field small { color: var(--muted); font-size: var(--type-caption); line-height: 1.45; }
+.na-password { position: relative; }
+.na-password input { padding-right: 70px; }
+.na-password button { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); border: 0; background: transparent; color: var(--muted); font: 700 var(--type-caption) var(--font-app); cursor: pointer; padding: 6px 8px; }
+.na-password button:focus-visible { outline: 2px solid var(--accent, var(--teal)); }
+.na-code input { font: 700 22px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .32em; text-align: center; }
+.na-submit { width: 100%; }
+.na-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.na-link { border: 0; background: none; padding: 0; color: var(--muted); font: 700 var(--type-label) var(--font-app); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.na-link:hover { color: var(--ink); }
+.na-step { display: grid; gap: 14px; }
+.na-step h3 { margin: 0; font: 700 18px/1.3 var(--font-app); color: var(--ink); }
+.na-step p { margin: 0; color: var(--muted); font-size: var(--type-body-small); line-height: 1.55; }
+.na-qr { display: grid; grid-template-columns: 168px 1fr; gap: 16px; align-items: center; }
+.na-qr svg { width: 168px; height: 168px; background: white; border: 1px solid var(--line); }
+.na-secret { display: grid; gap: 6px; font-size: var(--type-label); color: var(--muted); }
+.na-secret code { display: block; padding: 8px 10px; background: #f3f2ec; color: var(--ink); font: 600 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; letter-spacing: .06em; }
+.na-codes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin: 0; padding: 14px; list-style: none; background: #f3f2ec; border: 1px dashed #c9c3b5; }
+.na-codes li { font: 700 14px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--ink); text-align: center; }
+.na-rules { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; font-size: var(--type-caption); color: var(--muted); }
+.na-rules li { display: flex; gap: 6px; align-items: center; }
+.na-rules li.ok { color: #1f5f3f; }
+.na-methods { display: flex; flex-wrap: wrap; gap: 6px; }
+.na-methods button { padding: 7px 11px; border: 1px solid var(--line); background: white; font: 700 var(--type-label) var(--font-app); color: var(--ink); cursor: pointer; }
+.na-methods button[aria-pressed="true"] { border-color: var(--accent, var(--teal)); box-shadow: inset 0 -2px 0 var(--accent, var(--teal)); }
+
+/* My security page */
+.na-page { display: grid; gap: 18px; max-width: 980px; }
+.na-card { display: grid; gap: 14px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); }
+.na-card > header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.na-card h2 { display: flex; gap: 8px; align-items: center; margin: 0; font: 700 var(--type-card-title, 17px) var(--font-app); color: var(--ink); }
+.na-card header p { margin: 4px 0 0; color: var(--muted); font-size: var(--type-label); }
+.na-list { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.na-list li { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 11px 0; border-top: 1px solid var(--line); }
+.na-list li b { font-size: var(--type-body-small); color: var(--ink); }
+.na-list li small { display: block; color: var(--muted); font-size: var(--type-caption); margin-top: 2px; }
+.na-badge { display: inline-block; margin-left: 6px; padding: 2px 7px; background: #e2f2e9; color: #1f5f3f; font: 800 10px var(--font-app); letter-spacing: .06em; text-transform: uppercase; vertical-align: middle; }
+.na-badge.warn { background: #faf1dc; color: #7c5610; } .na-badge.bad { background: #fbe6e1; color: #a2402f; } .na-badge.muted { background: #eef0ec; color: var(--muted); }
+.na-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* HR access panel (employee drawer + register) */
+.na-access { display: grid; gap: 10px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.na-access h3 { margin: 0; font: 800 var(--type-caption) var(--font-app); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.na-access .na-row { justify-content: flex-start; }
+.na-access-panel { display: grid; gap: 16px; }
+.na-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.na-summary span { display: grid; gap: 2px; padding: 10px 12px; background: white; border: 1px solid var(--line); font-size: var(--type-caption); color: var(--muted); }
+.na-summary b { font: 800 20px var(--font-app); color: var(--ink); }
+.na-policy { display: grid; gap: 10px; }
+.na-policy label { display: grid; gap: 4px; font: 700 var(--type-label) var(--font-app); color: var(--ink); }
+.na-policy select, .na-policy input[type="number"] { padding: 9px 10px; border: 1px solid #cbd5d1; font: 500 var(--type-label) var(--font-app); background: white; }
+.na-policy .na-check { display: flex; gap: 8px; align-items: center; font-weight: 600; }
+
+@media (max-width: 640px) {
+  .na-qr { grid-template-columns: 1fr; justify-items: center; }
+  .na-grid2, .na-summary { grid-template-columns: 1fr 1fr; }
+  .na-card { padding: 18px 16px; }
+  .na-list li { grid-template-columns: 1fr; }
+}

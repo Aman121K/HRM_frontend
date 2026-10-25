@@ -1,0 +1,64 @@
+# Northstar People web (HRM_frontend) CI. Read-only towards the outside world (no deploys, no pushes to registries).
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "22"
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  build:
+    name: Type-check + production build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_PLATFORM_API_URL: https://api.people.example.invalid
+      NEXT_PUBLIC_APP_DOMAIN: people.example.invalid
+      NEXT_PUBLIC_ALLOW_DEMO_IDENTITY: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "${{ env.NODE_VERSION }}", cache: npm }
+      - run: npm ci --ignore-scripts
+      - run: npm run typecheck
+      - run: npm run build
+
+  audit:
+    name: npm audit (production deps, fail on high)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "${{ env.NODE_VERSION }}" }
+      - run: npm audit --omit=dev --audit-level=high
+
+  docker:
+    name: Docker image build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build web (standalone)
+        run: |
+          docker buildx build -f Dockerfile --target web \
+            --build-arg NEXT_PUBLIC_PLATFORM_API_URL=https://api.people.example.invalid \
+            --build-arg NEXT_PUBLIC_APP_DOMAIN=people.example.invalid \
+            --build-arg APP_VERSION="${GITHUB_SHA::12}" -t northstar-web:ci --load .
+      - name: Image runs as non-root
+        run: |
+          user=$(docker image inspect -f '{{.Config.User}}' northstar-web:ci); echo "user=$user"; test "$user" = "node"

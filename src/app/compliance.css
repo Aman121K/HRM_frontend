@@ -1,0 +1,100 @@
+/* Compliance Center (super admin) and the employee policy gate. Builds on cases.css and the Security Center (auth.css). */
+.cc-actions { display: flex; gap: 8px; flex-wrap: wrap; align-self: start; }
+.cc-frameworks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+.cc-frameworks button { display: grid; gap: 2px; text-align: left; padding: 14px 16px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font-family: var(--font-app); cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+.cc-frameworks button b { font-size: 15px; }
+.cc-frameworks button small { color: var(--muted); font-size: var(--type-caption); }
+.cc-frameworks button.active { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.cc-frameworks button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cc-page .cw-tabs { margin: 18px 0 14px; }
+.cc-page .cw-tabs button { display: inline-flex; align-items: center; gap: 6px; }
+.cc-page .cw-chips { margin-bottom: 8px; }
+
+.cc-group { margin-top: 14px; }
+.cc-control { width: 100%; display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 14px; align-items: start; padding: 14px 16px; margin-bottom: 6px;
+  border: 1px solid var(--line); background: var(--paper); color: var(--ink); text-align: left; font-family: var(--font-app); cursor: pointer; transition: border-color .15s, transform .15s; }
+.cc-control:hover { border-color: var(--accent); }
+.cc-control:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cc-control > code { font: 700 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--accent); }
+.cc-control > span:nth-child(2) { display: grid; gap: 3px; min-width: 0; }
+.cc-control b { font-size: 14px; }
+.cc-control small { color: var(--muted); font-size: var(--type-caption); line-height: 1.45; }
+.cc-checks { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+.cc-checks i { display: inline-flex; align-items: center; gap: 4px; font-style: normal; font-size: 11px; font-weight: 650; padding: 2px 7px; border: 1px solid var(--line); color: var(--muted); background: #f7f8f6; }
+.cc-checks i::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #aeb6b3; }
+.cc-checks i.r-pass::before { background: #1f7a4f; } .cc-checks i.r-warn::before { background: #c08a1e; } .cc-checks i.r-fail::before { background: #b5432f; }
+.cc-checks i.r-info::before { display: none; } .cc-checks i.r-info { color: #2f6f9f; }
+
+.cc-drawer { width: min(620px, 100vw); }
+.cc-desc { margin: 4px 0 8px; color: var(--muted); }
+.cc-check { display: grid; grid-template-columns: 92px 1fr; gap: 12px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.cc-check p { margin: 2px 0 0; color: var(--muted); font-size: var(--type-caption); line-height: 1.5; }
+.cc-check .cw-badge { justify-self: start; }
+.cc-history { margin: 10px 0 4px; } .cc-history summary { cursor: pointer; color: var(--accent); font-weight: 650; font-size: var(--type-label); }
+.cc-evidence { display: grid; grid-template-columns: 20px 1fr; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--ink); }
+.cc-evidence p { margin: 2px 0; color: var(--muted); font-size: var(--type-caption); }
+.cc-evidence small { color: var(--muted); font-size: 11px; display: block; }
+.cc-evidence a { display: inline-flex; gap: 4px; align-items: center; margin-top: 4px; font-size: var(--type-caption); color: var(--accent); font-weight: 650; }
+.cc-add { display: grid; gap: 8px; margin-top: 12px; padding: 14px; background: #f6f7f4; border: 1px dashed var(--line); }
+.cc-add input, .cc-add textarea { width: 100%; padding: 9px 11px; border: 1px solid var(--line); background: white; font: inherit; color: var(--ink); }
+.cc-add .cw-btn { justify-self: start; }
+
+.cc-bar { display: flex; gap: 16px; align-items: center; justify-content: space-between; padding: 14px 16px; margin-bottom: 14px; background: var(--paper); border: 1px solid var(--line); }
+.cc-bar p { margin: 0; color: var(--muted); max-width: 70ch; line-height: 1.5; }
+.cc-bar .cw-btn { flex: none; }
+.cc-reviews { display: grid; gap: 6px; margin-bottom: 14px; }
+.cc-review { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); text-align: left; font-family: var(--font-app); cursor: pointer; }
+.cc-review span:first-child { display: grid; gap: 2px; } .cc-review small { color: var(--muted); font-size: var(--type-caption); }
+.cc-review.active { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.cc-review-detail { background: var(--paper); border: 1px solid var(--line); }
+.cc-review-detail > header { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.cc-review-detail h3 { margin: 0; flex: 1; font-size: 16px; }
+.cc-review-detail .cw-alert { margin: 12px 16px 0; }
+.cc-toggle { display: inline-flex; gap: 6px; align-items: center; font-size: var(--type-label); color: var(--muted); }
+.cc-items { display: grid; }
+.cc-item { display: grid; grid-template-columns: minmax(160px, 1.2fr) minmax(150px, 1fr) minmax(120px, 1fr) auto; gap: 12px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.cc-item.keep { background: #f6faf7; } .cc-item.revoke { background: #fdf4f2; }
+.cc-who, .cc-what { display: grid; gap: 2px; min-width: 0; }
+.cc-who small, .cc-what small { color: var(--muted); font-size: 11px; overflow: hidden; text-overflow: ellipsis; }
+.cc-what code { font-size: 11px; font-weight: 700; color: var(--accent); }
+.cc-flags { display: flex; flex-wrap: wrap; gap: 4px; }
+.cc-decide { display: flex; gap: 6px; justify-content: flex-end; align-items: center; flex-wrap: wrap; }
+.cc-revoke { display: flex; gap: 6px; align-items: center; }
+.cc-revoke input { width: 170px; padding: 7px 9px; border: 1px solid var(--line); font: inherit; }
+
+.cc-policies { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.cc-policy { display: grid; gap: 8px; align-content: start; padding: 16px; background: var(--paper); border: 1px solid var(--line); }
+.cc-policy header { display: grid; grid-template-columns: 20px 1fr; gap: 10px; color: var(--accent); }
+.cc-policy header div { display: grid; gap: 2px; color: var(--ink); } .cc-policy header small, .cc-policy > small { color: var(--muted); font-size: var(--type-caption); }
+.cc-policy p { margin: 0; color: var(--muted); font-size: var(--type-label); line-height: 1.5; }
+.cc-policy .cw-btn { justify-self: start; }
+.cc-progress { height: 6px; background: #e7e9e5; overflow: hidden; }
+.cc-progress i { display: block; height: 100%; background: var(--coral); } .cc-progress i.ok { background: var(--gold); } .cc-progress i.good { background: var(--green); }
+.cc-chain tr.bad td { background: #fdf4f2; }
+.cc-chain .cw-badge { margin-left: 6px; }
+
+/* Employee policy gate */
+.pg-backdrop { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: 16px; background: rgba(16, 28, 33, .55); }
+.pg-dialog { width: min(680px, 100%); max-height: min(86vh, 820px); display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto; background: var(--paper); box-shadow: 0 24px 60px rgba(0, 0, 0, .25); }
+.pg-dialog > header { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 22px 24px 14px; }
+.pg-dialog h2 { margin: 2px 0 4px; font: 700 21px/1.25 var(--font-app); } .pg-dialog h2 small { color: var(--muted); font-size: 13px; font-weight: 600; }
+.pg-dialog header p:last-child { margin: 0; color: var(--muted); }
+.pg-icon { width: 40px; height: 40px; display: grid; place-items: center; background: #e7f0f2; color: #1d4b5c; }
+.pg-body { overflow: auto; margin: 0 24px; padding: 16px 18px; border: 1px solid var(--line); background: #fbfbf9; white-space: pre-wrap; line-height: 1.6; font-size: 14px; color: var(--ink); }
+.pg-body:focus-visible { outline: 2px solid #1d4b5c; }
+.pg-dialog .cw-alert { margin: 10px 24px 0; }
+.pg-dialog footer { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 16px 24px 20px; }
+.pg-dialog footer label { display: inline-flex; gap: 8px; align-items: center; font-weight: 600; }
+.pg-dialog footer .cw-btn { --accent: #1d4b5c; }
+
+@media (max-width: 800px) {
+  .cc-frameworks { grid-template-columns: 1fr; }
+  .cc-bar { flex-direction: column; align-items: stretch; }
+  .cc-control { grid-template-columns: 1fr; gap: 6px; }
+  .cc-control .cw-badge { justify-self: start; }
+  .cc-item { grid-template-columns: 1fr; gap: 6px; }
+  .cc-decide { justify-content: flex-start; }
+  .cc-revoke { flex-wrap: wrap; } .cc-revoke input { width: 100%; }
+  .cc-check { grid-template-columns: 1fr; gap: 4px; }
+  .pg-dialog > header { padding: 18px 16px 12px; } .pg-body { margin: 0 16px; } .pg-dialog footer { padding: 14px 16px 16px; }
+}

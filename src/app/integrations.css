@@ -1,0 +1,178 @@
+/* Integrations (/settings/integrations): devices, accounting exports, bank payouts, webhooks. Builds on cases.css (cw-*). */
+.ig-page .cw-tabs button { display: inline-flex; align-items: center; gap: 7px; }
+.ig-muted { color: var(--muted); font-style: normal; font-size: var(--type-body-small); }
+.ig-sub { display: block; margin-top: 2px; color: var(--muted); font-size: var(--type-caption); font-weight: 500; }
+.ig-warn { display: block; color: #9a4a1f; font-size: var(--type-caption); font-weight: 650; }
+.ig-lede { margin: 0 0 14px; max-width: 760px; color: var(--muted); font-size: var(--type-body-small); line-height: var(--leading-body); }
+.ig-stack { display: grid; gap: 18px; }
+.ig-left { justify-content: flex-start !important; }
+.ig-page code, .ig-drawer code { font: 600 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; background: #f1efe7; padding: 1px 5px; overflow-wrap: anywhere; }
+
+/* Overview cards */
+.ig-cards article { position: relative; align-content: start; }
+.ig-cards article span { line-height: 1.45; padding-right: 8px; }
+.ig-card-link { justify-self: start; margin-top: 6px; padding: 0; border: 0; background: none; font: 750 var(--type-label) var(--font-app); color: var(--accent); cursor: pointer; }
+.ig-card-link:hover { text-decoration: underline; }
+.ig-card-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Sub-toolbar & section heads */
+.ig-subbar { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.ig-subbar-actions { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+.ig-section-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 10px; }
+.ig-section-head h3, .ig-card h3 { margin: 0 0 4px; font: 700 var(--type-card-title) var(--font-app); }
+.ig-section-head .cw-help { margin: 0; max-width: 720px; line-height: 1.5; }
+.ig-section-head select, .ig-textarea { border: 1px solid #cbd5d1; background: white; padding: 7px 10px; font: 500 var(--type-body-small) var(--font-app); color: var(--ink); }
+.ig-section-head .cw-search { margin-bottom: 0; }
+.ig-card { display: grid; gap: 12px; align-content: start; padding: 20px 22px; background: var(--paper); border: 1px solid var(--line); }
+.ig-card .cw-help { margin: 0; line-height: 1.5; }
+.ig-textarea { width: 100%; box-sizing: border-box; resize: vertical; font-family: ui-monospace, Menlo, monospace; font-size: 12px; }
+.ig-textarea:focus, .ig-section-head select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.cw-fields.single { grid-template-columns: 1fr; }
+
+/* Tables */
+.cw-row.ig-device-row { grid-template-columns: minmax(200px, 2fr) minmax(130px, 1.2fr) 120px 140px 110px minmax(140px, 1fr); }
+.cw-row.ig-map-row { grid-template-columns: minmax(200px, 2fr) 140px minmax(120px, 1fr) 52px; }
+.cw-row.ig-unmatched-row { grid-template-columns: minmax(150px, 1.2fr) 80px 170px minmax(200px, 1.6fr) 230px; }
+.cw-row.ig-export-row { grid-template-columns: minmax(220px, 2fr) 130px 140px 150px 130px 52px; }
+.cw-row.ig-batch-row { grid-template-columns: minmax(180px, 1.6fr) 140px 150px minmax(140px, 1fr) 150px 70px; }
+.cw-row.ig-sub-row { grid-template-columns: minmax(220px, 2fr) 150px 150px 80px 110px 70px; }
+.ig-unmatched-row select { width: 100%; padding: 8px 10px; border: 1px solid #cbd5d1; background: white; font: 500 var(--type-body-small) var(--font-app); }
+.ig-pin { font-size: 13px !important; }
+.ig-hash { font-size: 11px !important; word-break: break-all; }
+.ig-url { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Chart */
+.ig-chart { margin: 0 0 16px; padding: 16px 18px 10px; background: var(--paper); border: 1px solid var(--line); }
+.ig-chart figcaption { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; font-size: var(--type-label); }
+.ig-chart figcaption span { display: inline-flex; gap: 6px; align-items: center; color: var(--muted); }
+.ig-chart svg { width: 100%; height: auto; display: block; }
+.ig-chart text { font: 600 10px var(--font-app); fill: var(--muted); }
+.ig-axis { stroke: var(--line); }
+.ig-bar { fill: var(--teal); }
+.ig-bar.warn, .ig-key.warn { fill: var(--gold); background: var(--gold); }
+.ig-key { display: inline-block; width: 10px; height: 10px; margin-left: 8px; }
+.ig-key.ok { background: var(--teal); }
+
+/* Split layout (list + side cards) */
+.ig-split { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 18px; align-items: start; }
+.ig-side { display: grid; gap: 14px; }
+.ig-import { display: grid; gap: 4px; padding: 10px 12px; background: #f6f4ec; }
+.ig-import p { margin: 0; font-size: var(--type-body-small); }
+
+/* Drawer extras */
+.ig-drawer { width: min(680px, 100vw); }
+.ig-drawer-foot { display: flex; justify-content: flex-end; gap: 10px; padding: 14px 30px; background: var(--paper); border-top: 1px solid var(--line); }
+.ig-secret { display: grid; gap: 12px; padding: 18px; background: #fffaf0; border: 1px solid #ecd9a8; border-left: 4px solid var(--gold); }
+.ig-secret header { display: flex; gap: 12px; align-items: flex-start; color: #7c5610; }
+.ig-secret header b { display: block; color: var(--ink); font-size: var(--type-body); }
+.ig-secret header p { margin: 3px 0 0; font-size: var(--type-body-small); }
+.ig-secret-row { display: grid; grid-template-columns: 140px 1fr auto; gap: 10px; align-items: center; }
+.ig-secret-row > span { font: 750 var(--type-label) var(--font-app); }
+.ig-secret-row > span small { display: block; color: var(--muted); font-weight: 500; }
+.ig-secret-row code { padding: 9px 10px !important; background: white !important; border: 1px solid #e3d4ad; font-size: 12.5px !important; user-select: all; }
+.ig-check { display: flex; gap: 8px; align-items: center; font-size: var(--type-body-small); font-weight: 600; }
+.ig-guide .cw-facts dd small { margin-top: 4px; }
+.ig-danger-zone { display: grid; gap: 6px; }
+.ig-danger-zone .cw-action-row, .cw-drawer-body > .cw-action-row { justify-content: flex-start; }
+.ig-confirm { display: grid; gap: 10px; padding: 14px; background: #fbf7ee; border: 1px solid #ead9b5; }
+.ig-confirm p { margin: 0; font-size: var(--type-body-small); line-height: 1.5; }
+.ig-maker { display: flex; gap: 8px; align-items: center; margin: 0 0 10px; color: #7c5610; font: 650 var(--type-body-small)/1.45 var(--font-app); }
+.cw-action-panel { display: grid; gap: 10px; }
+
+/* Lists inside drawers */
+.ig-punches, .ig-payouts, .ig-deliveries { list-style: none; margin: 0; padding: 0; background: var(--paper); border: 1px solid var(--line); }
+.ig-punches li, .ig-payouts li { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.ig-payouts li { grid-template-columns: 1fr auto auto; }
+.ig-punches li:last-child, .ig-payouts li:last-child, .ig-deliveries li:last-child { border-bottom: 0; }
+.ig-punches li > span:first-child, .ig-payouts li > span:first-child { display: grid; gap: 2px; min-width: 0; font-size: var(--type-body-small); }
+.ig-punches small, .ig-payouts small { color: var(--muted); font-size: var(--type-caption); }
+.ig-payouts .num { font-variant-numeric: tabular-nums; font-weight: 700; font-size: var(--type-body-small); }
+.ig-deliveries li { border-bottom: 1px solid var(--line); }
+.ig-delivery-head { width: 100%; display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 10px 14px; border: 0; background: none; text-align: left; font-family: var(--font-app); color: var(--ink); cursor: pointer; }
+.ig-delivery-head:hover { background: #faf8f2; }
+.ig-delivery-head:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.ig-delivery-head span:first-child { display: grid; gap: 2px; font-size: var(--type-body-small); }
+.ig-delivery-head small { color: var(--muted); font-size: var(--type-caption); }
+.ig-delivery-body { display: grid; gap: 8px; padding: 0 14px 14px; }
+.ig-delivery-body pre { margin: 0; max-height: 220px; overflow: auto; padding: 10px; background: #f4f2ea; font: 11.5px/1.5 ui-monospace, Menlo, monospace; white-space: pre-wrap; word-break: break-word; }
+.ig-delivery-body .cw-btn { justify-self: start; }
+
+/* Event picker */
+.ig-events { margin: 0; padding: 0; border: 0; display: grid; gap: 12px; }
+.ig-events legend { margin-bottom: 8px; font: 750 var(--type-label) var(--font-app); }
+.ig-events legend em { color: var(--coral); font-style: normal; }
+.ig-events > div { display: grid; gap: 4px; }
+.ig-events > div > small { font: 750 var(--type-caption) var(--font-app); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.ig-events label { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; background: var(--paper); border: 1px solid var(--line); cursor: pointer; }
+.ig-events label:has(input:checked) { border-color: color-mix(in srgb, var(--accent) 45%, white); background: color-mix(in srgb, var(--accent) 5%, var(--paper)); }
+.ig-events label input { margin-top: 3px; }
+.ig-events label span { display: grid; gap: 2px; }
+.ig-events label small { color: var(--muted); font-size: var(--type-caption); }
+
+/* Accounting */
+.ig-export-controls { grid-template-columns: minmax(220px, 1fr) minmax(220px, 1fr); max-width: 720px; }
+.ig-voucher { border: 1px solid var(--line); background: white; }
+.ig-voucher header { display: flex; justify-content: space-between; gap: 10px; padding: 10px 14px; background: #f3f2ec; font-size: var(--type-body-small); }
+.ig-voucher > p { margin: 0; padding: 8px 14px; color: var(--muted); font-size: var(--type-caption); border-bottom: 1px solid var(--line); }
+.ig-lines { display: grid; }
+.ig-line { display: grid; grid-template-columns: 1fr 140px 140px; gap: 12px; padding: 8px 14px; border-bottom: 1px solid #efede6; font-size: var(--type-body-small); }
+.ig-line:last-child { border-bottom: 0; }
+.ig-line.head { font: 750 var(--type-caption) var(--font-app); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.ig-line small { display: block; color: var(--muted); font-size: var(--type-caption); }
+.ig-line .num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 650; }
+.ig-totals { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); background: var(--paper); }
+.ig-totals > div { display: grid; gap: 4px; padding: 12px 14px; border-right: 1px solid var(--line); }
+.ig-totals > div:last-child { border-right: 0; }
+.ig-totals small { font: 750 var(--type-caption) var(--font-app); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.ig-totals b { display: inline-flex; gap: 6px; align-items: center; font: 700 17px/1.2 var(--font-app); font-variant-numeric: tabular-nums; }
+.ig-totals .ok b { color: #1f7a4f; } .ig-totals .bad b { color: #a2402f; }
+.ig-checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.ig-checks li { display: grid; grid-template-columns: 18px 1fr auto; gap: 8px; align-items: center; font-size: var(--type-body-small); }
+.ig-checks li.ok svg { color: #1f7a4f; } .ig-checks li.bad { color: #a2402f; font-weight: 650; }
+.ig-checks em { font-style: normal; color: var(--muted); font-variant-numeric: tabular-nums; font-size: var(--type-caption); }
+
+/* Payouts */
+.ig-adapters { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.ig-adapters article { display: grid; gap: 6px; align-content: start; padding: 16px 18px; background: var(--paper); border: 1px solid var(--line); }
+.ig-adapters header { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; font-size: var(--type-body-small); }
+.ig-adapters p { margin: 0; font-size: var(--type-body-small); line-height: 1.5; }
+.ig-adapters small { color: var(--muted); font-size: var(--type-caption); line-height: 1.45; }
+.ig-progress { display: grid; gap: 4px; }
+.ig-progress > span { display: flex; height: 6px; background: #ebeae3; overflow: hidden; }
+.ig-progress i { display: block; height: 100%; background: #1f7a4f; }
+.ig-progress i.bad { background: var(--coral); }
+.ig-progress small { color: var(--muted); font-size: var(--type-caption); }
+.ig-file-button { position: relative; overflow: hidden; }
+.ig-file-button input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.ig-file-button.busy { opacity: .6; pointer-events: none; }
+.ig-file-button:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (max-width: 1100px) {
+  .ig-split { grid-template-columns: 1fr; }
+  .cw-row.ig-device-row, .cw-row.ig-batch-row, .cw-row.ig-sub-row, .cw-row.ig-export-row { grid-template-columns: minmax(180px, 2fr) 1fr 1fr 1fr 110px; }
+  .cw-row.ig-device-row > :nth-child(4), .cw-row.ig-batch-row > :nth-child(6), .cw-row.ig-sub-row > :nth-child(6), .cw-row.ig-export-row > :nth-child(5) { display: none; }
+}
+@media (max-width: 800px) {
+  .ig-subbar-actions { width: 100%; justify-content: flex-end; }
+  .ig-section-head { flex-direction: column; align-items: stretch; }
+  .cw-row.ig-device-row, .cw-row.ig-map-row, .cw-row.ig-batch-row, .cw-row.ig-sub-row, .cw-row.ig-export-row { grid-template-columns: 1fr auto; }
+  .cw-row.ig-device-row > :nth-child(3) { display: block; }
+  .cw-row.ig-batch-row > :nth-child(5), .cw-row.ig-sub-row > :nth-child(5) { display: block; }
+  .cw-row.ig-map-row > :nth-child(2) { display: block; }
+  .cw-row.ig-map-row > :nth-child(4) { display: flex; }
+  .cw-row.ig-export-row > :nth-child(6) { display: flex; }
+  .cw-row.ig-unmatched-row { grid-template-columns: 1fr; }
+  .cw-row.ig-unmatched-row > * { display: block !important; }
+  .cw-row.ig-unmatched-row .cw-row-cta { display: flex !important; justify-content: flex-start; }
+  .ig-export-controls { grid-template-columns: 1fr; }
+  .ig-totals { grid-template-columns: 1fr 1fr; }
+  .ig-totals > div:nth-child(2) { border-right: 0; }
+  .ig-totals > div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .ig-line { grid-template-columns: 1fr 100px 100px; gap: 8px; }
+  .ig-secret-row { grid-template-columns: 1fr; }
+  .ig-drawer-foot { padding: 12px 18px; }
+  .ig-payouts li { grid-template-columns: 1fr auto; }
+  .ig-payouts li .cw-badge { grid-column: 1 / -1; justify-self: start; }
+  .ig-checks li { grid-template-columns: 18px 1fr; }
+  .ig-checks em { grid-column: 2; }
+}

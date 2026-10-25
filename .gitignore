@@ -1,0 +1,16 @@
+# --- secrets (never commit) ---
+.env
+.env.*
+!.env.example
+
+# --- dependencies & build outputs ---
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+coverage/
+
+# --- editor / OS ---
+.DS_Store
+npm-debug.log*
+*.log
