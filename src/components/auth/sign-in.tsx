@@ -1,5 +1,5 @@
 "use client";
-import { AlertTriangle, ArrowRight, BarChart3, Building2, CalendarRange, KeyRound, Loader2, ShieldCheck, WalletCards } from "lucide-react";
+import { AlertTriangle, ArrowRight, BarChart3, Building2, CalendarRange, Check, Inbox, KeyRound, Loader2, MapPin, ShieldCheck, WalletCards } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { authConfig, beginSignIn, clearSession, completeSignIn, type AuthConfig } from "@/lib/auth";
@@ -28,19 +28,44 @@ const read = (key: string) => { try { return window.localStorage.getItem(key); }
 const returnTarget = (fallback: string) =>
   safeReturnPath(typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("returnTo") : null, fallback);
 
+/** Decorative product preview on the sign-in panel (sample figures, hidden from screen readers). */
+function ProductPreview() {
+  return (
+    <div className="auth-preview" aria-hidden="true">
+      <div className="auth-tile punch">
+        <span className="auth-tile-icon"><MapPin size={15} /></span>
+        <div><small>Punched in · Indiranagar café</small><b>09:02 AM</b></div>
+        <em><Check size={12} /> On site</em>
+      </div>
+      <div className="auth-tile payslip">
+        <small>October 2026 · Net pay</small>
+        <b>₹42,380</b>
+        <div className="auth-tile-bars"><i style={{ height: "48%" }} /><i style={{ height: "62%" }} /><i style={{ height: "55%" }} /><i style={{ height: "70%" }} /><i className="on" style={{ height: "82%" }} /></div>
+        <span>PF · ESI · PT · TDS worked out</span>
+      </div>
+      <div className="auth-tile approvals">
+        <span className="auth-tile-icon"><Inbox size={15} /></span>
+        <div><small>Waiting on you</small><b>3 approvals</b></div>
+        <span className="auth-avatars"><i>RK</i><i>AS</i><i>MJ</i></span>
+      </div>
+    </div>
+  );
+}
+
 function ProductPanel() {
   return (
     <aside className="auth-brand">
       <div className="auth-logo"><span className="brand-mark"><i /><i /><i /></span><span>clanchief<small>HR</small></span></div>
-      <div>
-        <h1>Every people process, one calm workspace.</h1>
-        <p>Payroll, time, service desk, talent and analytics — built for teams that run on shifts and care about craft.</p>
+      <div className="auth-hero">
+        <h1>Your whole team, one calm workspace.</h1>
+        <p>Attendance, leave, payroll and approvals for teams that run on shifts — from the café floor to head office.</p>
+        <ProductPreview />
       </div>
       <ul>
-        <li><WalletCards size={17} /> India payroll with PF, ESI, PT and TDS</li>
-        <li><CalendarRange size={17} /> Rosters, attendance and leave that talk to each other</li>
-        <li><BarChart3 size={17} /> Live analytics with privacy thresholds</li>
-        <li><ShieldCheck size={17} /> SSO, tenant isolation and a full audit trail</li>
+        <li><WalletCards size={16} /> India payroll</li>
+        <li><CalendarRange size={16} /> Shifts & leave</li>
+        <li><BarChart3 size={16} /> Live analytics</li>
+        <li><ShieldCheck size={16} /> Audit trail</li>
       </ul>
     </aside>
   );
@@ -87,8 +112,8 @@ export function WorkspaceFinder() {
       <ProductPanel />
       <main className="auth-card" aria-labelledby="auth-title">
         <p className="cw-eyebrow" style={{ color: "var(--teal)" }}>SIGN IN</p>
-        <h2 id="auth-title">Find your workspace</h2>
-        <p className="auth-lead">Use the sign-in link your company shared, or enter your workspace code.</p>
+        <h2 id="auth-title">Welcome back</h2>
+        <p className="auth-lead">Enter your company&apos;s workspace code to continue to its sign-in page.</p>
         {last && (
           <a className="auth-last" href={brandUrl(last.slug)} style={{ ["--brand" as string]: last.brandColor }}>
             {last.logoDataUrl ? <img src={last.logoDataUrl} alt="" /> : <span>{orgInitials(last.shortName)}</span>}
@@ -98,10 +123,15 @@ export function WorkspaceFinder() {
         {error && <p className="cw-alert" role="alert"><AlertTriangle size={15} /> {error}</p>}
         <form className="auth-finder" onSubmit={go}>
           <label htmlFor="workspace-code">Workspace code</label>
-          <div><input id="workspace-code" value={code} onChange={(event) => setCode(event.target.value)} placeholder="e.g. got-tea" autoComplete="organization" autoCapitalize="none" required />
-            <button className="cw-btn primary" style={{ ["--accent" as string]: "#0b615c" }} disabled={busy}>{busy ? <Loader2 size={16} className="spin" /> : <ArrowRight size={16} />} Continue</button></div>
+          <div className="auth-code">
+            <input id="workspace-code" value={code} onChange={(event) => setCode(event.target.value)} placeholder="your-company" autoComplete="organization" autoCapitalize="none" spellCheck={false} required aria-describedby="workspace-help" />
+            <span>.clanchief.com</span>
+          </div>
+          <button className="cw-btn primary lg" style={{ ["--accent" as string]: "#0b615c" }} disabled={busy}>{busy ? <Loader2 size={16} className="spin" /> : null} Continue <ArrowRight size={16} /></button>
+          <p id="workspace-help" className="auth-help">Don&apos;t know your code? It&apos;s in the invitation email from your HR team — or ask them for your sign-in link.</p>
         </form>
-        <p className="auth-note"><a href={adminHref}><Building2 size={13} /> Platform administrator sign-in</a></p>
+        <div className="auth-divider"><span>or</span></div>
+        <p className="auth-note auth-admin"><a href={adminHref}><Building2 size={13} /> Platform administrator sign-in</a></p>
         <LegalLinks />
       </main>
     </div>
