@@ -43,7 +43,7 @@ export function PlatformConsole() {
   const flash = (message: string) => { setToast(message); window.setTimeout(() => setToast(""), message.length > 80 ? 10000 : 4000); };
   const toggleStatus = async (org: PlatformOrg) => {
     const status = org.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE";
-    if (status === "SUSPENDED" && !window.confirm(`Suspend ${org.shortName}? Its people won't be able to use Northstar until it's reactivated.`)) return;
+    if (status === "SUSPENDED" && !window.confirm(`Suspend ${org.shortName}? Its people won't be able to use ClanChief until it's reactivated.`)) return;
     try { await httpRequest(`/api/v2/platform/orgs/${org.id}`, { method: "PATCH", body: { status, version: org.version } }); flash(`${org.shortName} ${status === "ACTIVE" ? "reactivated" : "suspended"}`); load(); }
     catch (reason) { setError(reason instanceof Error ? reason.message : "Couldn't update the brand."); }
   };
@@ -111,7 +111,7 @@ const ADMIN_ROLES: Record<string, string> = { OWNER: "Owner", HR_ADMIN: "HR admi
 async function sendAdminInvite(orgId: string, userId: string, name: string) {
   try {
     const result = await httpRequest<{ invited: boolean; alreadyActive?: boolean; email: string }>(`/api/v2/platform/auth/orgs/${orgId}/users/${userId}/invite`, { method: "POST", body: {} });
-    return result.alreadyActive ? `${name} already has a Northstar login and can sign in right away.` : `An invitation to set a password was emailed to ${result.email} (valid for 72 hours).`;
+    return result.alreadyActive ? `${name} already has a ClanChief login and can sign in right away.` : `An invitation to set a password was emailed to ${result.email} (valid for 72 hours).`;
   } catch (reason) {
     return `The invitation email couldn't be sent (${reason instanceof Error ? reason.message : "unknown error"}). Use "Send invite" under Edit → Administrators to try again.`;
   }

@@ -1,12 +1,12 @@
-# Northstar People — Web app
+# ClanChief — Web app
 
-Next.js 16 (App Router) + React 19 web app for Northstar People: employee self-service, manager and HR workspaces,
+Next.js 16 (App Router) + React 19 web app for ClanChief: employee self-service, manager and HR workspaces,
 payroll, attendance, compliance and the super admin console. All data comes from the platform API
 ([HRM_backend](https://github.com/Aman121K/HRM_backend)); this app has no database or API routes of its own.
 
 ## Repositories
 
-Northstar People is split into four repositories:
+ClanChief is split into four repositories:
 
 | Repository | What it is |
 |---|---|

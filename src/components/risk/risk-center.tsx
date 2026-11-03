@@ -17,7 +17,7 @@ type Tab = "all" | Area;
 const AREA_ICONS: Record<Area, typeof ShieldAlert> = {
   compliance: CalendarClock, attendance: Fingerprint, labour: Scale, payroll: BadgeIndianRupee, expenses: Receipt, people: HeartHandshake, service: Timer,
 };
-const ETHICS = "People signals are prompts to check in, never predictions or judgements. They use only facts in Northstar (tenure, declined requests, overdue onboarding tasks, attendance days) — no guesses about intent, no personal characteristics — and are visible only to HR and the person's direct manager. Don't use them for performance, pay or disciplinary decisions.";
+const ETHICS = "People signals are prompts to check in, never predictions or judgements. They use only facts in ClanChief (tenure, declined requests, overdue onboarding tasks, attendance days) — no guesses about intent, no personal characteristics — and are visible only to HR and the person's direct manager. Don't use them for performance, pay or disciplinary decisions.";
 
 function readParam(name: string) {
   if (typeof window === "undefined") return null;

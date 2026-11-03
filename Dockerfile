@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.7
-# Northstar web (Next.js 16, App Router). Builds with output: "standalone" (enabled by NEXT_OUTPUT=standalone in
+# ClanChief web (Next.js 16, App Router). Builds with output: "standalone" (enabled by NEXT_OUTPUT=standalone in
 # next.config.mjs) so the runtime image holds server.js + traced node_modules only. src/proxy.ts (per-request CSP nonce,
 # brand subdomain routing) runs unchanged in standalone mode.
 #   docker build -f Dockerfile.web \

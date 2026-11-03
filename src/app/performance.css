@@ -1,0 +1,127 @@
+/* Performance cycles (components/performance). Builds on cases.css (cw-*), payroll-engine.css (pe-*) and loans.css (loan-* helpers). */
+.perf-stepper { margin-bottom: 4px; }
+.perf-cycle-select select { min-height: 42px; padding: 0 12px; border: 1px solid var(--line); background: var(--paper); font: 700 var(--type-body-small) var(--font-app); color: var(--ink); max-width: 320px; }
+.perf-sheet { display: grid; gap: 16px; }
+.perf-result { display: grid; grid-template-columns: auto 1fr; gap: 10px 24px; align-items: center; padding: 18px 20px; border: 1px solid var(--line); background: linear-gradient(120deg, #f2f7f5, var(--paper)); box-shadow: inset 4px 0 0 var(--accent); }
+.perf-result small { display: block; font: 750 var(--type-caption) var(--font-app); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.perf-result b { font: 800 var(--type-section-title) var(--font-app); display: flex; gap: 10px; align-items: center; }
+.perf-result blockquote { margin: 0; font-size: var(--type-body); color: var(--ink); }
+.perf-result blockquote small { text-transform: none; letter-spacing: 0; margin-top: 4px; }
+.perf-promo { grid-column: 1 / -1; margin: 0; display: flex; gap: 6px; align-items: center; color: var(--green); font-weight: 700; }
+.perf-pill { display: inline-grid; place-items: center; min-width: 34px; height: 26px; padding: 0 8px; border-radius: 13px; font: 800 var(--type-body-small) var(--font-app); font-variant-numeric: tabular-nums; color: white; }
+.perf-pill.r1 { background: #b4493a; } .perf-pill.r2 { background: #c9822b; } .perf-pill.r3 { background: #3a6ea5; } .perf-pill.r4 { background: #0f8177; } .perf-pill.r5 { background: #0b4f4a; }
+.perf-progress { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; min-width: 110px; }
+.perf-progress::before { content: ""; grid-area: 1 / 1; height: 6px; background: #eaeeea; border-radius: 3px; }
+.perf-progress i { grid-area: 1 / 1; height: 6px; background: var(--accent); border-radius: 3px; }
+.perf-progress small { font: 750 var(--type-caption) var(--font-app); color: var(--muted); font-variant-numeric: tabular-nums; }
+.perf-goals { display: grid; gap: 10px; }
+.perf-goal { background: var(--paper); border: 1px solid var(--line); padding: 14px 16px; display: grid; gap: 8px; }
+.perf-goal header { display: grid; grid-template-columns: auto 1fr 180px; gap: 12px; align-items: center; }
+.perf-goal h3 { margin: 0; font: 750 var(--type-card-title) var(--font-app); }
+.perf-goal p { margin: 0; font-size: var(--type-body-small); }
+.perf-goal footer { display: flex; flex-wrap: wrap; gap: 16px; padding-top: 8px; border-top: 1px dashed var(--line); font-size: var(--type-body-small); font-weight: 650; }
+.perf-goal footer span { display: inline-flex; gap: 6px; align-items: center; }
+.perf-goal footer small { color: var(--muted); font-weight: 500; }
+.perf-weight-chip { font: 800 var(--type-caption) var(--font-app); padding: 4px 8px; background: #eef4f2; color: var(--accent); }
+.perf-kr-list { display: grid; gap: 4px; }
+.perf-kr { display: grid; grid-template-columns: 1fr 90px auto; gap: 10px; align-items: center; font-size: var(--type-body-small); }
+.perf-kr input { width: 90px; padding: 5px 8px; border: 1px solid var(--line); font: inherit; font-variant-numeric: tabular-nums; }
+.perf-kr small { color: var(--muted); }
+.perf-kr-list .cw-btn { justify-self: start; }
+.cw-btn.sm { min-height: 30px; padding: 0 10px; font-size: var(--type-caption); }
+.perf-goal-editor { display: grid; gap: 12px; }
+.perf-goal-card { border: 1px solid var(--line); background: var(--paper); padding: 12px 14px 14px; margin: 0; display: grid; gap: 10px; }
+.perf-goal-card legend { font: 800 var(--type-caption) var(--font-app); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 0 6px; }
+.perf-krs { display: grid; gap: 6px; padding: 10px; background: #f7f6f1; }
+.perf-kr-head { margin: 0; display: flex; gap: 8px; align-items: baseline; font-size: var(--type-body-small); }
+.perf-kr-head small { color: var(--muted); }
+.perf-kr-row { display: grid; grid-template-columns: 1fr 80px auto 80px 70px auto; gap: 6px; align-items: center; }
+.perf-kr-row input { padding: 7px 8px; border: 1px solid var(--line); font: 600 var(--type-body-small) var(--font-app); min-width: 0; background: var(--paper); }
+.perf-kr-row span { color: var(--muted); font-size: var(--type-caption); }
+.perf-remove { justify-self: end; color: #a2402f; }
+.perf-goal-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.perf-weight { font: 750 var(--type-body-small) var(--font-app); color: #a2402f; }
+.perf-weight.ok { color: var(--green); }
+.perf-rating { display: inline-flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+.perf-rating button { width: 32px; height: 32px; border: 1px solid var(--line); background: var(--paper); font: 800 var(--type-body-small) var(--font-app); color: var(--muted); cursor: pointer; }
+.perf-rating button.fill { background: #e3efec; color: var(--accent); border-color: #c7dcd6; }
+.perf-rating button.on { background: var(--accent); color: white; border-color: var(--accent); }
+.perf-rating button:disabled { cursor: default; }
+.perf-rating small { margin-left: 6px; color: var(--muted); font-size: var(--type-caption); font-weight: 650; min-width: 120px; }
+.perf-competencies { display: grid; gap: 8px; }
+.perf-competency { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #efece4; }
+.perf-competency b { display: block; font-size: var(--type-body-small); }
+.perf-competency small { color: var(--muted); font-size: var(--type-caption); }
+.perf-review-form h4, .perf-h4 { margin: 10px 0 0; font: 800 var(--type-caption) var(--font-app); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.perf-review-goal { display: grid; grid-template-columns: minmax(180px, 1fr) auto minmax(160px, 1fr); gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #efece4; }
+.perf-review-goal b { display: block; font-size: var(--type-body-small); }
+.perf-review-goal small { color: var(--muted); font-size: var(--type-caption); }
+.perf-review-goal input { padding: 7px 8px; border: 1px solid var(--line); font: 500 var(--type-body-small) var(--font-app); }
+.perf-noms ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.perf-noms li { display: flex; gap: 8px; align-items: center; font-size: var(--type-body-small); font-weight: 650; }
+.perf-noms li small { color: var(--muted); }
+.perf-noms .pe-link { justify-self: start; }
+.perf-feedback h4 { margin: 10px 0 4px; font: 800 var(--type-caption) var(--font-app); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.perf-feedback ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: var(--type-body-small); }
+.perf-feedback ul small { color: var(--muted); }
+.perf-bars { display: grid; gap: 6px; }
+.perf-bars > div { display: grid; grid-template-columns: 160px 1fr 34px; gap: 10px; align-items: center; font-size: var(--type-body-small); font-weight: 650; }
+.perf-bars i { height: 8px; background: #eaeeea; border-radius: 4px; overflow: hidden; }
+.perf-bars i b { display: block; height: 100%; background: var(--accent); }
+.perf-bars em { font-style: normal; text-align: right; font-variant-numeric: tabular-nums; }
+.perf-team-table .cw-row { grid-template-columns: minmax(200px, 1.8fr) 140px 150px 100px 100px 60px 70px 130px; }
+.perf-fb-table .cw-row { grid-template-columns: minmax(200px, 1.6fr) minmax(160px, 1.2fr) 120px 150px 130px; }
+.perf-cal-table .cw-row { grid-template-columns: 28px minmax(180px, 1.5fr) 70px minmax(200px, 1.3fr) 150px 190px 130px 70px; align-items: start; }
+.perf-cal-table select, .perf-cal-table input:not([type="checkbox"]) { width: 100%; padding: 6px 8px; border: 1px solid var(--line); font: 600 var(--type-body-small) var(--font-app); background: var(--paper); }
+.perf-cal-table .perf-num { width: 80px; }
+.perf-note-input { margin-top: 6px; }
+.perf-promo-cell { display: flex; gap: 6px; align-items: center; }
+.perf-filter { width: 100%; max-width: 420px; padding: 9px 12px; border: 1px solid var(--line); background: var(--paper); font: 600 var(--type-body-small) var(--font-app); margin-bottom: 12px; }
+.perf-drawer-sub { margin: 4px 0 0; color: var(--muted); font-size: var(--type-body-small); }
+.perf-admin { display: grid; gap: 16px; }
+.perf-stage { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.perf-stage h2 { margin: 2px 0 4px; display: flex; gap: 10px; align-items: center; font: 800 var(--type-section-title) var(--font-app); }
+.perf-stage p { margin: 0; }
+.perf-dist header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.perf-dist h3 { margin: 0; font: 750 var(--type-body) var(--font-app); }
+.perf-dist header span { color: var(--muted); font-size: var(--type-caption); }
+.perf-dist-bars { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; align-items: end; min-height: 200px; }
+.perf-dist-bars > div { display: grid; justify-items: center; gap: 4px; align-content: end; text-align: center; }
+.perf-dist-bars i { width: 70%; border-radius: 4px 4px 0 0; }
+.perf-dist-bars i.r1 { background: #b4493a; } .perf-dist-bars i.r2 { background: #c9822b; } .perf-dist-bars i.r3 { background: #3a6ea5; } .perf-dist-bars i.r4 { background: #0f8177; } .perf-dist-bars i.r5 { background: #0b4f4a; }
+.perf-dist-bars b { font: 800 var(--type-card-title) var(--font-app); }
+.perf-dist-bars small { color: var(--muted); font-size: var(--type-caption); font-weight: 650; }
+.perf-dist-bars em { font-style: normal; font-size: var(--type-caption); color: var(--muted); }
+.perf-rev-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.perf-eff { display: inline-flex; gap: 6px; align-items: center; font-size: var(--type-caption); font-weight: 700; color: var(--muted); }
+.perf-eff input { padding: 6px 8px; border: 1px solid var(--line); font: inherit; color: var(--ink); }
+.perf-comp-editor { display: grid; gap: 6px; }
+.perf-comp-editor > div { display: grid; grid-template-columns: 200px 1fr auto; gap: 8px; align-items: center; }
+.perf-comp-editor input { padding: 8px 10px; border: 1px solid var(--line); font: 600 var(--type-body-small) var(--font-app); min-width: 0; }
+.perf-comp-editor > .pe-link { justify-self: start; }
+.cw-empty.compact { padding: 18px; }
+@media (max-width: 1100px) {
+  .perf-team-table .cw-row { grid-template-columns: minmax(180px, 1.6fr) 150px 100px 70px 60px; }
+  .perf-team-table .cw-row > :nth-child(4), .perf-team-table .cw-row > :nth-child(5), .perf-team-table .cw-row > :nth-child(6) { display: none; }
+  .perf-cal-table .cw-row { grid-template-columns: 28px minmax(160px, 1fr) minmax(180px, 1fr) 120px 70px; }
+  .perf-cal-table .cw-row > :nth-child(3), .perf-cal-table .cw-row > :nth-child(6), .perf-cal-table .cw-row > :nth-child(7) { display: none; }
+  /* cases.css hides every table's 4th column below 1100px; the final rating must stay visible. */
+  .perf-cal-table .cw-row > :nth-child(4) { display: block; }
+}
+@media (max-width: 800px) {
+  .perf-goal header { grid-template-columns: auto 1fr; }
+  .perf-goal header .perf-progress { grid-column: 1 / -1; }
+  .perf-review-goal, .perf-competency { grid-template-columns: 1fr; }
+  .perf-kr-row { grid-template-columns: 1fr 1fr; }
+  .perf-team-table .cw-row, .perf-fb-table .cw-row { grid-template-columns: 1fr auto; }
+  .perf-team-table .cw-row > :not(:nth-child(1)):not(:nth-child(7)), .perf-fb-table .cw-row > :not(:nth-child(1)):not(:nth-child(4)) { display: none; }
+  .perf-cal-table .cw-row { grid-template-columns: 28px 1fr; }
+  .perf-cal-table .cw-row > :nth-child(n+3) { grid-column: 2; }
+  .perf-cal-table .cw-row > :nth-child(2) { display: grid; }
+  .perf-cal-table .cw-row > :nth-child(4), .perf-cal-table .cw-row > :nth-child(5), .perf-cal-table .cw-row > :nth-child(8) { display: block; }
+  .perf-fb-table .cw-row > :nth-child(4) { display: block; }
+  .perf-stage { flex-direction: column; align-items: flex-start; }
+  .perf-result { grid-template-columns: 1fr; }
+  .perf-bars > div { grid-template-columns: 110px 1fr 30px; }
+  .perf-comp-editor > div { grid-template-columns: 1fr; }
+}

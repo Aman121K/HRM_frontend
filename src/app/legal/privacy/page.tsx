@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Doc, Todo, V } from "../_lib/doc";
 import { legalEntity } from "../_lib/legal-config";
 
-export const metadata: Metadata = { title: "Privacy Policy — Northstar HRM" };
+export const metadata: Metadata = { title: "Privacy Policy — ClanChief" };
 
 export default function Privacy() {
   const e = legalEntity();

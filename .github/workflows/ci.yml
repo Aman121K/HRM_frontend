@@ -1,4 +1,4 @@
-# Northstar People web (HRM_frontend) CI. Read-only towards the outside world (no deploys, no pushes to registries).
+# ClanChief web (HRM_frontend) CI. Read-only towards the outside world (no deploys, no pushes to registries).
 name: ci
 
 on:

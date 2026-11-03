@@ -33,7 +33,7 @@ export function AttendanceWorkspace() {
         <div>
           <p className="cw-eyebrow">TIME · ATTENDANCE</p>
           <h1>Attendance</h1>
-          <p>Punch in with your location from the web or the Northstar mobile app. Biometric punches from café devices appear here too.</p>
+          <p>Punch in with your location from the web or the ClanChief mobile app. Biometric punches from café devices appear here too.</p>
         </div>
         <Link className="cw-btn ghost" href="/roster">My roster</Link>
       </header>

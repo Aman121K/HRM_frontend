@@ -241,7 +241,7 @@ export function DashboardShell() {
             <i />
           </span>
           <span>
-            northstar<small>PEOPLE</small>
+            clanchief<small>HR</small>
           </span>
         </Link>
         <button
@@ -696,7 +696,7 @@ export function DashboardShell() {
           </div>
           <DashboardPulse />
           <footer>
-            Northstar People · Workspace data refreshed just now{" "}
+            ClanChief · Workspace data refreshed just now{" "}
             <span>Privacy · Help centre</span>
           </footer>
         </div>

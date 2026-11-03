@@ -31,7 +31,7 @@ const returnTarget = (fallback: string) =>
 function ProductPanel() {
   return (
     <aside className="auth-brand">
-      <div className="auth-logo"><span className="brand-mark"><i /><i /><i /></span><span>northstar<small>PEOPLE</small></span></div>
+      <div className="auth-logo"><span className="brand-mark"><i /><i /><i /></span><span>clanchief<small>HR</small></span></div>
       <div>
         <h1>Every people process, one calm workspace.</h1>
         <p>Payroll, time, service desk, talent and analytics — built for teams that run on shifts and care about craft.</p>
@@ -57,7 +57,7 @@ function BrandPanel({ brand }: { brand: PublicBrand }) {
         <h1>Welcome to {brand.displayName}.</h1>
         <p>Your attendance, leave, payslips, requests and learning — all in one place.</p>
       </div>
-      <p className="auth-powered">Powered by <b>northstar</b> people</p>
+      <p className="auth-powered">Powered by <b>clanchief</b></p>
     </aside>
   );
 }
@@ -207,14 +207,14 @@ export function AdminSignIn() {
   return (
     <div className="auth-page">
       <aside className="auth-brand admin">
-        <div className="auth-logo"><span className="brand-mark"><i /><i /><i /></span><span>northstar<small>PLATFORM</small></span></div>
+        <div className="auth-logo"><span className="brand-mark"><i /><i /><i /></span><span>clanchief<small>PLATFORM</small></span></div>
         <div><h1>Platform administration.</h1><p>Add brands, set their modules and branding, and manage who runs each one. Brand data stays inside each brand.</p></div>
         <ul><li><ShieldCheck size={17} /> Every action is audited</li><li><Building2 size={17} /> Each brand is a fully isolated organization</li></ul>
       </aside>
       <main className="auth-card" aria-labelledby="auth-title">
         <p className="cw-eyebrow" style={{ color: "var(--teal)" }}>SUPER ADMIN</p>
         <h2 id="auth-title">Platform sign-in</h2>
-        <p className="auth-lead">For Northstar platform administrators only. Two-step verification is always required. Employees should use their brand's sign-in link.</p>
+        <p className="auth-lead">For ClanChief platform administrators only. Two-step verification is always required. Employees should use their brand's sign-in link.</p>
         {error && <p className="cw-alert" role="alert"><AlertTriangle size={15} /> {error}</p>}
         <div style={{ ["--accent" as string]: "#132c38" }}><PasswordSignIn brand="platform" forgotHref="/forgot-password?admin=1" /></div>
         {config?.oidc && (

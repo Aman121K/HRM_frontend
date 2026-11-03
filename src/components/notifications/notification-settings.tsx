@@ -74,7 +74,7 @@ export function NotificationSettings() {
           <div className="ns-side">
             <section className="ns-card">
               <h2>Channels</h2>
-              <label className="ns-toggle"><span><b>Push to my phone</b><small>Northstar mobile app</small></span>
+              <label className="ns-toggle"><span><b>Push to my phone</b><small>ClanChief mobile app</small></span>
                 <input type="checkbox" role="switch" checked={prefs.channels.push} disabled={busy} onChange={(event) => save({ ...prefs, channels: { ...prefs.channels, push: event.target.checked } })} /></label>
               <label className="ns-toggle"><span><b>Email</b><small>Digests and important updates</small></span>
                 <input type="checkbox" role="switch" checked={prefs.channels.email} disabled={busy} onChange={(event) => save({ ...prefs, channels: { ...prefs.channels, email: event.target.checked } })} /></label>
@@ -92,7 +92,7 @@ export function NotificationSettings() {
             </section>
             <section className="ns-card">
               <h2><Smartphone size={15} /> My devices</h2>
-              {!devices.length ? <p className="cw-muted">No phones registered. Sign in to the Northstar mobile app to get push notifications.</p> : devices.map((device) => (
+              {!devices.length ? <p className="cw-muted">No phones registered. Sign in to the ClanChief mobile app to get push notifications.</p> : devices.map((device) => (
                 <div key={device.id} className="ns-device">
                   <span><b>{device.deviceName || device.platform}</b><small>{device.platform} · {device.provider}{device.environment ? ` · ${device.environment}` : ""}{device.lastSeenAt ? ` · seen ${relativeTime(device.lastSeenAt)}` : ""}</small></span>
                   {device.active === false ? <span className="cw-badge tone-neutral"><i />Inactive</span> : <span className="cw-badge tone-success"><i />Active</span>}

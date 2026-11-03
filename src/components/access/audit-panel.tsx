@@ -58,7 +58,7 @@ export function AuditPanel({ flash }: { flash: (message: string) => void }) {
 
       {error && <ErrorState message={error} onRetry={load} />}
       {!data ? <div className="cw-list-skeleton"><i /><i /><i /><i /></div> : !data.items.length ? (
-        <div className="cw-empty"><span><FileClock size={24} /></span><h2>No matching changes</h2><p>{active ? "Try widening the filters." : "Changes appear here as people use Northstar."}</p></div>
+        <div className="cw-empty"><span><FileClock size={24} /></span><h2>No matching changes</h2><p>{active ? "Try widening the filters." : "Changes appear here as people use ClanChief."}</p></div>
       ) : (
         <>
           <div className="cw-table ax-audit-table" role="table" aria-label="Audit log">

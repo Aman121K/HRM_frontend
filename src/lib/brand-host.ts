@@ -3,7 +3,7 @@
 export const APP_DOMAIN = (process.env.NEXT_PUBLIC_APP_DOMAIN || "localhost").toLowerCase();
 const RESERVED = new Set([
   "www", "app", "api", "admin", "auth", "login", "sso", "idp", "mail", "smtp", "static", "cdn", "assets", "files", "status",
-  "platform", "help", "support", "docs", "dev", "staging", "test", "demo", "northstar", "b", "m", "mobile", "ws",
+  "platform", "help", "support", "docs", "dev", "staging", "test", "demo", "northstar", "clanchief", "b", "m", "mobile", "ws",
 ]);
 const SLUG = /^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/;
 

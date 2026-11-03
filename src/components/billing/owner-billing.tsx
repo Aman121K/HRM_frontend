@@ -57,7 +57,7 @@ export function OwnerBilling() {
       )}
 
       <section className="cw-stats">
-        <article><small>Plan</small><b className="text">{sub?.planName || "Not assigned"}</b><span>{sub ? `${sub.cycle === "ANNUAL" ? "Annual" : "Monthly"} · since ${day(sub.contractStart)}` : "Contact Northstar to choose a plan"}</span></article>
+        <article><small>Plan</small><b className="text">{sub?.planName || "Not assigned"}</b><span>{sub ? `${sub.cycle === "ANNUAL" ? "Annual" : "Monthly"} · since ${day(sub.contractStart)}` : "Contact ClanChief to choose a plan"}</span></article>
         <article><small>Billable today</small><b>{data.liveCount}</b><span>employees</span></article>
         <article><small>Price per employee</small><b className="text">{sub ? inr(sub.pepmPaise) : "—"}</b><span>{sub ? `per month · minimum ${inr(sub.minimumPaise)}` : ""}</span></article>
         <article className={data.overduePaise ? "attention" : ""}><small>Balance due</small><b className="text">{inr(data.outstandingPaise)}</b><span>{data.overduePaise ? `${inr(data.overduePaise)} overdue` : "nothing overdue"}</span></article>
@@ -132,7 +132,7 @@ export function OwnerBilling() {
           </div>
         )}
         {data.payTo && data.outstandingPaise > 0 && (
-          <div className={styles.card}><h3>How to pay</h3><p style={{ whiteSpace: "pre-line" }}>{data.payTo.bankDetails}</p><p>Quote the invoice number as the payment reference. Payments are recorded by Northstar within one working day.</p></div>
+          <div className={styles.card}><h3>How to pay</h3><p style={{ whiteSpace: "pre-line" }}>{data.payTo.bankDetails}</p><p>Quote the invoice number as the payment reference. Payments are recorded by ClanChief within one working day.</p></div>
         )}
       </section>
     </div>

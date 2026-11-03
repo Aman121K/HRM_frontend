@@ -11,7 +11,7 @@ type Discovery = { authorization_endpoint: string; token_endpoint: string; end_s
 const TOKEN_KEY = "hrm.access_token";
 const ID_TOKEN_KEY = "hrm.id_token";
 const FLOW_KEY = "hrm.oidc_flow";
-/** "native" when the session came from Northstar's own password sign-in (refresh cookie), "oidc" for company SSO. */
+/** "native" when the session came from ClanChief's own password sign-in (refresh cookie), "oidc" for company SSO. */
 const AUTH_KIND_KEY = "hrm.auth_kind";
 let configPromise: Promise<AuthConfig> | null = null;
 

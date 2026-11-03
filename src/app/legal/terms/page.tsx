@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Doc, Todo, V } from "../_lib/doc";
 import { legalEntity } from "../_lib/legal-config";
 
-export const metadata: Metadata = { title: "Terms of Service — Northstar HRM" };
+export const metadata: Metadata = { title: "Terms of Service — ClanChief" };
 
 export default function Terms() {
   const e = legalEntity();

@@ -49,7 +49,7 @@ export function CertificateView({ id }: { id: string }) {
             <div><small>Verification code</small><b className="code">{data.code}</b></div>
             <div><small>Course version</small><b>v{data.courseVersion}</b></div>
           </footer>
-          <p className="lms-cert-verify">Verify this certificate in Northstar People → Learning → Verify a certificate.</p>
+          <p className="lms-cert-verify">Verify this certificate in ClanChief → Learning → Verify a certificate.</p>
         </div>
       </article>
     </div>
@@ -77,7 +77,7 @@ export function VerifyCertificate() {
       <Link href="/learning" className="lms-back"><ArrowLeft size={15} /> Learning</Link>
       <header className="cw-hero">
         <span className="cw-hero-icon"><BadgeCheck size={26} strokeWidth={1.7} /></span>
-        <div><p className="cw-eyebrow">LEARNING · VERIFY</p><h1>Verify a certificate</h1><p>Enter the code printed on a Northstar learning certificate (for example NS-7K2P-QX9D) to confirm it is genuine.</p></div>
+        <div><p className="cw-eyebrow">LEARNING · VERIFY</p><h1>Verify a certificate</h1><p>Enter the code printed on a ClanChief learning certificate (for example NS-7K2P-QX9D) to confirm it is genuine.</p></div>
       </header>
       <form className="lms-verify" onSubmit={(event) => { event.preventDefault(); check(); }}>
         <label className="cw-search"><Search size={15} /><input value={code} onChange={(event) => setCode(event.target.value.toUpperCase())} placeholder="NS-XXXX-XXXX" aria-label="Verification code" maxLength={12} autoComplete="off" /></label>

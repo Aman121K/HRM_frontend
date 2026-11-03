@@ -40,7 +40,7 @@ export function ExecutiveOverview() {
         <div>
           <p className="cw-eyebrow">WORKFORCE INTELLIGENCE</p>
           <h1>People analytics</h1>
-          <p>Live metrics from every Northstar module — headcount, attrition, time, service, hiring and cost — with the story behind the numbers.</p>
+          <p>Live metrics from every ClanChief module — headcount, attrition, time, service, hiring and cost — with the story behind the numbers.</p>
         </div>
         {data && <span className="an-scope"><ShieldCheck size={15} /> {data.scope.label}</span>}
       </header>

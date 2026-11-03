@@ -451,6 +451,7 @@ const EXPORTS = [
   { kind: "pf-ecr", title: "PF ECR (text)", body: "EPFO ECR 2.0 layout: UAN, wages, EPF/EPS contributions and NCP days, #~# separated.", icon: FileText },
   { kind: "esi", title: "ESI contribution summary", body: "IP number, days paid, wages and employee/employer ESI for covered employees, with totals.", icon: FileText },
   { kind: "pt", title: "Professional tax summary", body: "Per-employee PT with a state-wise summary for the return.", icon: FileText },
+  { kind: "lwf", title: "Labour welfare fund", body: "Employee and employer LWF for states whose contribution falls due this month, with a state-wise remittance summary.", icon: FileText },
 ];
 function ExportsTab({ run, onError }: { run: RunDetail; onError: (message: string) => void }) {
   const [busy, setBusy] = useState("");

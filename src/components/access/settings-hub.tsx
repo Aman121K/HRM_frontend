@@ -34,7 +34,7 @@ export function SettingsHub() {
     { href: "/settings/notifications", title: "My notifications", body: "What reaches your phone and inbox, quiet hours and your devices.", icon: BellRing, needs: [], needLabel: "" },
     { href: "/settings/access", title: "Access & roles", body: "Custom roles, permission matrix, temporary access, access reviews.", icon: ShieldCheck, needs: ["settings.access", "audit.view"], needLabel: "Manage roles & access",
       stat: org ? `${org.customRoles} custom role${org.customRoles === 1 ? "" : "s"} · ${org.grants.live} grant${org.grants.live === 1 ? "" : "s"}${org.grants.expiringSoon ? ` · ${org.grants.expiringSoon} ending soon` : ""}` : undefined },
-    { href: "/settings/access?tab=audit", title: "Audit log", body: "Every change across Northstar — who, what, when, before and after.", icon: FileClock, needs: ["audit.view"], needLabel: "View audit log",
+    { href: "/settings/access?tab=audit", title: "Audit log", body: "Every change across ClanChief — who, what, when, before and after.", icon: FileClock, needs: ["audit.view"], needLabel: "View audit log",
       stat: org ? `${org.auditLast24h.toLocaleString("en-IN")} change${org.auditLast24h === 1 ? "" : "s"} in the last 24 h` : undefined },
     { href: "/settings/attendance", title: "Attendance sites", body: "Work locations and geofence radius used for web and mobile punches.", icon: MapPin, needs: ["attendance.sites.manage"], needLabel: "Manage attendance sites",
       stat: org ? `${org.sites.active} active of ${org.sites.total}` : undefined },
@@ -51,7 +51,7 @@ export function SettingsHub() {
         <div>
           <p className="cw-eyebrow">ORGANIZATION CONTROL</p>
           <h1>Settings</h1>
-          <p>Configure who can do what, where people work, the systems Northstar connects to and how payroll and onboarding run.</p>
+          <p>Configure who can do what, where people work, the systems ClanChief connects to and how payroll and onboarding run.</p>
         </div>
       </header>
 
@@ -86,7 +86,7 @@ export function SettingsHub() {
               <div><dt>Legal name</dt><dd>{org.profile.name}</dd></div>
               <div><dt>Workspace</dt><dd><code>{org.profile.slug}</code></dd></div>
               <div><dt>Active employees</dt><dd>{org.people.active}<small>{org.people.withLogin} with sign-in</small></dd></div>
-              <div><dt>On Northstar since</dt><dd>{dateLabel(org.profile.createdAt)}</dd></div>
+              <div><dt>On ClanChief since</dt><dd>{dateLabel(org.profile.createdAt)}</dd></div>
               <div className="wide"><dt>Base roles</dt><dd className="ax-org-roles">{Object.entries(org.baseRoles).sort().map(([role, n]) => <span key={role}>{BASE_ROLE_LABEL[role] || role} <b>{n}</b></span>)}</dd></div>
             </dl>
             <div className="ax-org-lists">

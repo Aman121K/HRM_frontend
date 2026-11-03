@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
 import "./legal.css";
 
-export const metadata: Metadata = { title: "Legal — Northstar HRM", robots: { index: true, follow: true } };
+export const metadata: Metadata = { title: "Legal — ClanChief", robots: { index: true, follow: true } };
 // Company particulars come from the environment at request time (and the root layout renders per request for the CSP nonce).
 export const dynamic = "force-dynamic";
 
@@ -14,7 +14,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
   return (
     <div className="lg-shell">
       <header className="lg-bar">
-        <Link href="/legal" className="auth-logo"><span className="brand-mark"><i /><i /><i /></span><span>northstar<small>LEGAL</small></span></Link>
+        <Link href="/legal" className="auth-logo"><span className="brand-mark"><i /><i /><i /></span><span>clanchief<small>LEGAL</small></span></Link>
         <nav aria-label="Legal documents">{LINKS.map(([href, label]) => <Link key={href} href={href}>{label}</Link>)}</nav>
       </header>
       <p className="lg-draft" role="note"><AlertTriangle size={18} aria-hidden /> <span><b>Draft — review with your lawyer before use.</b> These are templates. Bracketed

@@ -92,7 +92,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <i />
           </span>
           <span>
-            northstar<small>PEOPLE</small>
+            clanchief<small>HR</small>
           </span>
         </Link>
         <button

@@ -9,7 +9,7 @@ const value = (key: string, placeholder: string) => {
 export function legalEntity() {
   return {
     name: value("LEGAL_COMPANY_NAME", "Company legal name"),
-    brand: value("LEGAL_PRODUCT_NAME", "Northstar HRM"),
+    brand: value("LEGAL_PRODUCT_NAME", "ClanChief"),
     address: value("LEGAL_COMPANY_ADDRESS", "Registered office address"),
     cin: value("LEGAL_CIN", "CIN"),
     gstin: value("LEGAL_GSTIN", "GSTIN"),

@@ -27,7 +27,7 @@ export function AdminConsole() {
   return (
     <div className="adm-shell">
       <header className="adm-bar">
-        <div className="auth-logo"><span className="brand-mark"><i /><i /><i /></span><span>northstar<small>PLATFORM</small></span></div>
+        <div className="auth-logo"><span className="brand-mark"><i /><i /><i /></span><span>clanchief<small>PLATFORM</small></span></div>
         <span className="adm-badge"><ShieldCheck size={14} /> Super admin</span>
         <nav className="adm-tabs" role="tablist">
           <button role="tab" aria-selected={tab === "brands"} className={tab === "brands" ? "active" : ""} onClick={() => setTab("brands")}>Brands</button>

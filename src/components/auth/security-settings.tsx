@@ -41,7 +41,7 @@ export function SecuritySettings() {
         {!data ? !error && <p className="auth-progress"><Loader2 size={18} className="spin" /> Loading…</p> : (
           <>
             {data.authMethod !== "local" && (
-              <p className="cw-alert warn">{data.authMethod === "demo" ? "You're using a local demo identity." : "You signed in with company SSO."} Password and session settings apply to Northstar password sign-in.</p>
+              <p className="cw-alert warn">{data.authMethod === "demo" ? "You're using a local demo identity." : "You signed in with company SSO."} Password and session settings apply to ClanChief password sign-in.</p>
             )}
             <PasswordCard data={data} onDone={done} />
             <MfaCard data={data} onDone={done} />

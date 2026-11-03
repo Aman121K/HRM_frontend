@@ -216,7 +216,7 @@ function Statement({ data, busy, run }: { data: Overview; busy: string; run: (la
           <div className="pe-card-head"><h2>Filing</h2><span>due {dateLabel(data.dueDates.statement)}</span></div>
           {data.statement.status === "FILED" ? (
             <>
-              <p style={{ margin: 0 }}><FileCheck2 size={15} style={{ verticalAlign: -2, color: ACCENT }} /> Filed on {dateLabel(data.statement.filedOn)} · token <b>{data.statement.tokenNumber}</b>{data.statement.filedExternally ? " · filed outside Northstar" : ""}</p>
+              <p style={{ margin: 0 }}><FileCheck2 size={15} style={{ verticalAlign: -2, color: ACCENT }} /> Filed on {dateLabel(data.statement.filedOn)} · token <b>{data.statement.tokenNumber}</b>{data.statement.filedExternally ? " · filed outside ClanChief" : ""}</p>
               <div className={s.actions}><button className="cw-btn ghost" disabled={!!busy} onClick={() => run("filing", () => returnsApi.filing(data.fy, data.quarter, { status: "DRAFT" }), "Quarter reopened as draft.")}>Reopen as draft</button></div>
             </>
           ) : (
@@ -255,6 +255,10 @@ function CertificatesPanel({ fy, flash, onChanged }: { fy: number; flash: (messa
     } catch (reason) { setError(errorText(reason, "Generation stopped.")); }
     finally { setProgress(null); await load(); onChanged(); }
   };
+  const downloadAll = async () => {
+    setBusy("bulk"); setError("");
+    try { await returnsApi.bulk(fy); } catch (reason) { setError(errorText(reason, "Download failed.")); } finally { setBusy(""); }
+  };
   const publish = async () => {
     if (!data?.set.version || !window.confirm(`Publish ${data.items.length} certificates for ${data.fyLabel}? Employees will be notified and the documents are frozen.`)) return;
     setBusy("publish"); setError("");
@@ -292,6 +296,7 @@ function CertificatesPanel({ fy, flash, onChanged }: { fy: number; flash: (messa
         {error && <ErrorState message={error} onRetry={load} />}
         <div className={s.actions}>
           {!published && <button className="cw-btn ghost" onClick={generate} disabled={!!progress || !!busy}>{progress ? <Loader2 size={15} className="spin" /> : <RefreshCw size={15} />} {data.set.status === "DRAFT" ? "Generate certificates" : "Regenerate"}</button>}
+          {data.set.generated > 0 && <button className="cw-btn ghost" onClick={downloadAll} disabled={!!busy || !!progress}>{busy === "bulk" ? <Loader2 size={15} className="spin" /> : <Download size={15} />} Download all (ZIP)</button>}
           {!published && <button className="cw-btn primary" onClick={publish} disabled={!data.canPublish || !!busy || !!progress} title={data.publishBlockedReason || undefined}>{busy === "publish" ? <Loader2 size={15} className="spin" /> : <Send size={15} />} Publish to employees</button>}
         </div>
         {!published && data.publishBlockedReason && data.set.status === "GENERATED" && <p className="pe-note"><Info size={13} /><span>{data.publishBlockedReason}</span></p>}

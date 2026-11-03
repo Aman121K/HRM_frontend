@@ -54,7 +54,7 @@ export function RecoveryCodes({ codes, onDone, doneLabel = "I've saved these cod
   const [copied, setCopied] = useState(false);
   const text = codes.join("\n");
   const download = () => {
-    const url = URL.createObjectURL(new Blob([`Northstar recovery codes\nEach code works once.\n\n${text}\n`], { type: "text/plain" }));
+    const url = URL.createObjectURL(new Blob([`ClanChief recovery codes\nEach code works once.\n\n${text}\n`], { type: "text/plain" }));
     const link = Object.assign(document.createElement("a"), { href: url, download: "northstar-recovery-codes.txt" });
     document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000);
   };
@@ -237,10 +237,10 @@ function AuthFrame({ eyebrow, title, lead, brand, children }: { eyebrow: string;
         <div className="auth-logo">
           {brand ? (brand.logoDataUrl ? <img src={brand.logoDataUrl} alt="" className="auth-brand-logo" /> : <span className="auth-brand-initials">{orgInitials(brand.shortName)}</span>)
             : <span className="brand-mark"><i /><i /><i /></span>}
-          <span>{brand ? brand.shortName : "northstar"}<small>{brand ? "PEOPLE WORKSPACE" : "PEOPLE"}</small></span>
+          <span>{brand ? brand.shortName : "clanchief"}<small>{brand ? "HR WORKSPACE" : "HR"}</small></span>
         </div>
         <div><h1>{brand ? `${brand.displayName}` : "Your account, secured."}</h1><p>Passwords are hashed with scrypt, sign-ins are protected by two-step verification, and every security change is audited.</p></div>
-        {brand && <p className="auth-powered">Powered by <b>northstar</b> people</p>}
+        {brand && <p className="auth-powered">Powered by <b>clanchief</b></p>}
       </aside>
       <main className="auth-card" aria-labelledby="auth-title" style={{ ["--accent" as string]: accent }}>
         <p className="cw-eyebrow" style={{ color: accent }}>{eyebrow}</p>

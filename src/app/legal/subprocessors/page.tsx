@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Doc, Todo, V } from "../_lib/doc";
 import { legalEntity, subProcessors } from "../_lib/legal-config";
 
-export const metadata: Metadata = { title: "Sub-processors — Northstar HRM" };
+export const metadata: Metadata = { title: "Sub-processors — ClanChief" };
 
 export default function SubProcessors() {
   const e = legalEntity();

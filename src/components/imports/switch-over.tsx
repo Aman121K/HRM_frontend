@@ -50,7 +50,7 @@ export function SwitchOverPage() {
       <header className="so-hero">
         <div>
           <p className="so-eyebrow">Switch-over import · FY {data?.settings.fiscalYear || "2026-27"}</p>
-          <h1>Move to Northstar mid-year</h1>
+          <h1>Move to ClanChief mid-year</h1>
           <p>Load opening data from PeopleStrong, Excel or another HRMS once: validate every row, preview the totals, commit in one transaction — and undo a batch while nothing depends on it.</p>
         </div>
         <div className="so-cut">
@@ -120,7 +120,7 @@ function SettingsCard({ settings, onSaved }: { settings: Settings; onSaved: () =
   return (
     <section className="so-card">
       <h2>Cut-over settings</h2>
-      <p>Leave balances are imported as of the cut-over date. Year-to-date payroll covers the months the old system paid; Northstar payroll runs after that month add these figures to the TDS projection.{settings.updatedBy ? ` Last saved by ${settings.updatedBy}, ${when(settings.updatedAt)}.` : ""}</p>
+      <p>Leave balances are imported as of the cut-over date. Year-to-date payroll covers the months the old system paid; ClanChief payroll runs after that month add these figures to the TDS projection.{settings.updatedBy ? ` Last saved by ${settings.updatedBy}, ${when(settings.updatedAt)}.` : ""}</p>
       <form className="so-form" onSubmit={save}>
         <label>Cut-over date<input type="date" value={form.cutoverDate} onChange={(e) => setForm({ ...form, cutoverDate: e.target.value })} /></label>
         <label>Last month paid by old system<input type="month" value={form.lastPaidPeriod} onChange={(e) => setForm({ ...form, lastPaidPeriod: e.target.value })} /></label>
@@ -364,7 +364,7 @@ function Reconciliation({ settings, viewer, onSaved }: { settings: Settings; vie
           </div>}
           <div className="so-table" style={{ maxHeight: "none" }}>
             <table>
-              <thead><tr><th>Section</th><th>Check</th><th className="so-num-cell">Northstar</th><th className="so-num-cell">Old system</th><th className="so-num-cell">Difference</th><th>Status</th></tr></thead>
+              <thead><tr><th>Section</th><th>Check</th><th className="so-num-cell">ClanChief</th><th className="so-num-cell">Old system</th><th className="so-num-cell">Difference</th><th>Status</th></tr></thead>
               <tbody>
                 {report.checks.map((check: any) => (
                   <tr key={`${check.section}-${check.label}`} className={check.ok === false ? "mismatch" : ""}>

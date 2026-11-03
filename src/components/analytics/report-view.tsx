@@ -130,7 +130,7 @@ function Definitions({ report }: { report: Report }) {
       {report.footnotes.length > 0 && <ol className="an-footnotes">{report.footnotes.map((note) => <li key={note}>{note}</li>)}</ol>}
       <p className="an-provenance">
         Period {formatValue(report.filters.from, "month")} – {formatValue(report.filters.to, "month")}{report.filters.partialLastMonth ? " (last month to date)" : ""} · {report.scope.label}
-        {report.source && <> · source: {report.source === "payroll_engine" ? "payroll runs" : "published payslips"}</>} · computed live from Northstar records, cached up to 5 minutes.
+        {report.source && <> · source: {report.source === "payroll_engine" ? "payroll runs" : "published payslips"}</>} · computed live from ClanChief records, cached up to 5 minutes.
       </p>
     </section>
   );

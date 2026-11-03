@@ -6,7 +6,7 @@ export default function LegalIndex() {
   const e = legalEntity();
   return (
     <Doc eyebrow="LEGAL & TRUST" title="Legal documents" meta={<>Operated by <V v={e.name} /> · Questions: <V v={e.email} /></>}>
-      <p>Northstar HRM is a human-resources platform that companies use to manage their employees. Each client company decides why and how its
+      <p>ClanChief is a human-resources platform that companies use to manage their employees. Each client company decides why and how its
         employees&apos; data is used (it is the <b>Data Fiduciary</b> under India&apos;s Digital Personal Data Protection Act, 2023); we process that data on its
         behalf (we are its <b>Data Processor</b>).</p>
       <nav className="lg-cards" aria-label="Documents">

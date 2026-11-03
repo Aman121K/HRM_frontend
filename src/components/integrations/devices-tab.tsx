@@ -157,7 +157,7 @@ function CreateDevice({ sites, onClose, onCreated }: { sites: { id: string; name
             <label><span>Site</span><select value={form.siteId} onChange={(event) => setForm({ ...form, siteId: event.target.value })}><option value="">No site</option>{sites.map((site) => <option key={site.id} value={site.id}>{site.name}</option>)}</select></label>
             <label><span>Timezone <small>(device clock)</small></span><input value={form.timezone} onChange={(event) => setForm({ ...form, timezone: event.target.value })} /></label>
           </div>
-          <p className="cw-help">The device secret and comm key are generated now and shown only once. Northstar stores only a fingerprint.</p>
+          <p className="cw-help">The device secret and comm key are generated now and shown only once. ClanChief stores only a fingerprint.</p>
           <div className="cw-create-foot"><button type="button" className="cw-btn ghost" onClick={onClose}>Cancel</button><button className="cw-btn primary" disabled={busy}>{busy ? "Registering…" : "Register device"}</button></div>
         </form>
       )}

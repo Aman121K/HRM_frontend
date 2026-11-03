@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Doc, Todo, V } from "../_lib/doc";
 import { legalEntity } from "../_lib/legal-config";
 
-export const metadata: Metadata = { title: "Data Processing Agreement — Northstar HRM" };
+export const metadata: Metadata = { title: "Data Processing Agreement — ClanChief" };
 
 export default function Dpa() {
   const e = legalEntity();

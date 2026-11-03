@@ -63,7 +63,7 @@ export function applyBranding(org: Pick<OrgSummary, "brandColor" | "accentColor"
   const root = document.documentElement;
   root.style.setProperty("--org-brand", org.brandColor);
   root.style.setProperty("--org-accent", org.accentColor);
-  if (!document.title.includes(org.shortName)) document.title = `${org.shortName} · Northstar People`;
+  if (!document.title.includes(org.shortName)) document.title = `${org.shortName} · ClanChief`;
 }
 
 export const orgInitials = (name: string) => name.replace(/[^A-Za-z ]/g, "").split(" ").filter(Boolean).map((part) => part[0]).slice(0, 2).join("").toUpperCase();

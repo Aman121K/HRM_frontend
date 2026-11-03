@@ -18,6 +18,8 @@ import "./punch-security.css";
 import "./integrations.css";
 import "./jobs.css";
 import "./access.css";
+import "./loans.css";
+import "./performance.css";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -26,7 +28,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Northstar People — Employee Workspace",
+  title: "ClanChief — Employee Workspace",
   description: "A modern human resources operations workspace"
 };
 

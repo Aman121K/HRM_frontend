@@ -56,6 +56,7 @@ export const returnsApi = {
   uploadPartA: (fy: number, employeeId: string, body: { originalName: string; mimeType: string; base64: string }) =>
     httpRequest<{ partA: { id: string; name: string } }>(`${base}/certificates/${fy}/${employeeId}/part-a`, { method: "POST", body }),
   document: (fy: number, employeeId: string, kind: "certificate" | "perquisites" | "tds-summary" | "part-a") => downloadFile(`${base}/documents/${fy}/${employeeId}/${kind}`, `${kind}-${fy}.pdf`),
+  bulk: (fy: number) => downloadFile(`${base}/certificates/${fy}/bulk`, `certificates-${fy}.zip`),
   mine: () => httpRequest<MyDocuments>(`${base}/mine`),
 };
 
