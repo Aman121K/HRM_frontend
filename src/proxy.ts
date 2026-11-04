@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { APP_DOMAIN, brandFromHostname } from "@/lib/brand-host";
+import { MAIN_HOST, brandFromHostname } from "@/lib/brand-host";
 import { buildCsp } from "@/lib/csp";
 
 /**
@@ -24,7 +24,7 @@ function route(request: NextRequest, headers: Headers) {
   if (pathname === "/admin" || pathname.startsWith("/admin/") || pathname === "/platform") {
     const host = request.headers.get("host") || "";
     const port = host.includes(":") ? `:${host.split(":")[1]}` : "";
-    const target = `${request.nextUrl.protocol}//${APP_DOMAIN}${port}${pathname}${search}`;
+    const target = `${request.nextUrl.protocol}//${MAIN_HOST}${port}${pathname}${search}`;
     // Not NextResponse.redirect: Next relativizes a Location on the same host as the dev server (localhost), which would loop.
     const safe = target.replace(/[&"<>]/g, (char) => `&#${char.charCodeAt(0)};`);
     return new NextResponse(`<!doctype html><meta http-equiv="refresh" content="0;url=${safe}"><a href="${safe}">Continue to the platform console</a>`,

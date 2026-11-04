@@ -1,6 +1,8 @@
 // Brand subdomains: <slug>.<APP_DOMAIN> serves one brand (got-tea.localhost:3000 locally, got-tea.people.example.com live).
 // Keep RESERVED in sync with backend/src/platform/organizations/brand-host.ts.
 export const APP_DOMAIN = (process.env.NEXT_PUBLIC_APP_DOMAIN || "localhost").toLowerCase();
+/** Host of the brandless app (workspace finder, super admin). Defaults to APP_DOMAIN; set app.<domain> when the bare domain is a marketing site. */
+export const MAIN_HOST = (process.env.NEXT_PUBLIC_APP_MAIN_HOST || APP_DOMAIN).toLowerCase();
 const RESERVED = new Set([
   "www", "app", "api", "admin", "auth", "login", "sso", "idp", "mail", "smtp", "static", "cdn", "assets", "files", "status",
   "platform", "help", "support", "docs", "dev", "staging", "test", "demo", "northstar", "clanchief", "b", "m", "mobile", "ws",
@@ -36,5 +38,5 @@ export function brandUrl(slug: string, path = "/login") {
 export function mainUrl(path = "/") {
   if (typeof window === "undefined" || !onAppDomain()) return path;
   const { protocol, port } = window.location;
-  return `${protocol}//${APP_DOMAIN}${port ? `:${port}` : ""}${path}`;
+  return `${protocol}//${MAIN_HOST}${port ? `:${port}` : ""}${path}`;
 }
