@@ -263,7 +263,7 @@ function ModulesDrawer({ org, modules, onClose, onSaved }: { org: PlatformOrg; m
 
 function CreateBrandDrawer({ groups, modules, onClose, onCreated }: { groups: Listing["groups"]; modules: string[]; onClose: () => void; onCreated: (message: string) => void }) {
   const ref = useRef<HTMLElement>(null);
-  const [form, setForm] = useState({ displayName: "", slug: "", legalName: "", shortName: "", industry: "", defaultState: "KA", employeePrefix: "", brandColor: "#0b615c", accentColor: "#c78c2b", groupId: groups[0]?.id || "", adminName: "", adminEmail: "", addMeAsOwner: true });
+  const [form, setForm] = useState({ displayName: "", slug: "", legalName: "", shortName: "", industry: "", defaultState: "KA", employeePrefix: "", brandColor: "#0b615c", accentColor: "#c78c2b", groupId: groups[0]?.id || "", adminName: "", adminEmail: "", addMeAsOwner: false });
   const [logo, setLogo] = useState<string | null>(null);
   const [enabled, setEnabled] = useState<string[]>(modules);
   const [slugTouched, setSlugTouched] = useState(false);

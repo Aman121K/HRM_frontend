@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { relativeTime, shortDate } from "@/lib/cases";
 import { useDialogFocus } from "@/lib/use-dialog-focus";
-import { ApiRequestError } from "@/lib/http-client";
+import { ApiRequestError, httpRequest } from "@/lib/http-client";
 import { countdown, DOC_CATEGORIES, employmentLabel, errorText, onboardingApi, OWNER_TYPES, PHASES, type Activity, type JoinerAction, type JoinerDetail as Detail, type Phase, type Task } from "./api";
 import { DocumentsPanel } from "./documents-panel";
 import { JoinerDrawer } from "./joiner-drawer";
@@ -199,8 +199,13 @@ function TransitionDialog({ detail, action, onClose, onDone }: { detail: Detail;
     setBusy(true); setError("");
     try {
       const next = await onboardingApi.transition(joiner.id, { action: action.action, version: joiner.version, note: note.trim() || undefined, ...(action.action === "convert" && workEmail ? { workEmail } : {}) });
+      // A new employee gets their set-your-password link right away (best effort: HR can resend from Access).
+      let invited = "";
+      if (action.action === "convert" && next.joiner.employee?.id)
+        invited = await httpRequest<{ email: string }>(`/api/v2/account-access/employees/${next.joiner.employee.id}/invite`, { method: "POST" })
+          .then((r) => ` · sign-in link sent to ${r.email}`, () => " · sign-in link not sent — use Access → Invite");
       const messages: Record<string, string> = {
-        ready: `${joiner.fullName} is ready to join`, convert: `Welcome ${joiner.fullName.split(" ")[0]}! Employee ${next.joiner.employee?.number} created`,
+        ready: `${joiner.fullName} is ready to join`, convert: `Welcome ${joiner.fullName.split(" ")[0]}! Employee ${next.joiner.employee?.number} created${invited}`,
         complete: "Onboarding marked complete", withdraw: "Joiner withdrawn and open tasks closed", back_to_preboarding: "Moved back to pre-boarding",
       };
       onDone(next, messages[action.action] || "Updated");
