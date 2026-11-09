@@ -1,7 +1,6 @@
 import { AppShell } from "@/components/app-shell";
-import { ModulePage } from "@/components/module-page";
-import { modules } from "@/lib/modules";
+import { LeaveOverview } from "@/components/leave/leave-overview";
 
 export default function Page() {
-  return <AppShell><ModulePage data={modules.leave} /></AppShell>;
+  return <AppShell><LeaveOverview /></AppShell>;
 }
