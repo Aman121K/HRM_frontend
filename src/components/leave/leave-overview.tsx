@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { CalendarDays, Check, Clock3, Plus, Undo2, X } from "lucide-react";
+import { CalendarDays, Check, Clock3, Eye, FileText, Plus, Undo2, X } from "lucide-react";
 import { httpRequest } from "@/lib/http-client";
+import { LeaveDetailPanel } from "./leave-detail";
 import "./leave-overview.css";
 
 type LeaveType = { id: string; code: string; name: string; annual_quota: string; balance: number | null; opening_balance: number | null; balance_as_of: string | null };
@@ -28,6 +29,8 @@ export function LeaveOverview() {
   const [state, setState] = useState<"loading" | "ready" | "error">("loading");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState("");
+  const [open, setOpen] = useState<string | null>(null);
+  const [isHr, setIsHr] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -38,6 +41,7 @@ export function LeaveOverview() {
       setTypes(t.items); setRequests(r.items); setState("ready"); setError("");
       // Managers and HR also get a shortcut to what is waiting for them; everyone else gets a 403 here, which is fine.
       httpRequest<{ items: unknown[] }>("/api/v2/approvals/leaves").then((q) => setTeamPending(q.items.length), () => setTeamPending(null));
+      httpRequest("/api/v2/leaves/register?status=PENDING").then(() => setIsHr(true), () => setIsHr(false));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Couldn't load your leave."); setState("error");
     }
@@ -75,6 +79,7 @@ export function LeaveOverview() {
           <p>Your balances and every leave request, with the manager's decision.</p>
         </div>
         <div className="lo-actions">
+          {isHr && <Link className="lo-secondary" href="/leave/register"><FileText size={16} /> Leave register</Link>}
           {teamPending !== null && (
             <Link className="lo-secondary" href="/approvals">
               <Check size={16} /> Team approvals{teamPending ? ` (${teamPending})` : ""}
@@ -143,6 +148,7 @@ export function LeaveOverview() {
                     <div className="lo-item-side">
                       <span><Clock3 size={13} /> Applied {fmtWhen(r.submitted_at)}</span>
                       {r.decided_at && <span>{r.status === "APPROVED" ? <Check size={13} /> : <X size={13} />} {LABEL[r.status]} {fmtWhen(r.decided_at)}</span>}
+                      <button className="lo-view" onClick={() => setOpen(r.id)}><Eye size={13} /> View details</button>
                       {r.status === "PENDING" && (
                         <button className="lo-withdraw" disabled={busy === r.id} onClick={() => withdraw(r.id)}>
                           <Undo2 size={13} /> {busy === r.id ? "Withdrawing…" : "Withdraw"}
@@ -156,6 +162,7 @@ export function LeaveOverview() {
           </section>
         </>
       )}
+      {open && <LeaveDetailPanel id={open} onClose={() => setOpen(null)} />}
     </div>
   );
 }

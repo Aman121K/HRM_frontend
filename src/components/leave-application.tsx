@@ -55,6 +55,7 @@ const calendarDays = (from: string, to: string) => {
 };
 
 export function LeaveApplication() {
+  const [approver,setApprover]=useState("your manager");
   const [type, setType] = useState(""),
     [from, setFrom] = useState(""),
     [to, setTo] = useState(""),
@@ -148,7 +149,7 @@ export function LeaveApplication() {
       setDraftMessage("Draft restored from this device");
     } catch {}
   }, []);
-  const loadRequests=useCallback(async()=>{try{const [types,history]=await Promise.all([httpRequest<any>("/api/v2/leave-types"),httpRequest<any>("/api/v2/leaves")]);setPolicyTypes(types.items.map((x:any,index:number)=>({...leavePolicy.types[index%leavePolicy.types.length],id:x.id,name:x.name,available:Number(x.balance??x.annual_quota),annual:Number(x.opening_balance??x.annual_quota),documentAfter:x.requires_document_after_days===null?undefined:Number(x.requires_document_after_days)})));setRequests(history.items.map((x:any)=>({id:x.id,type:x.leave_type,dates:`${String(x.start_date).slice(0,10)} to ${String(x.end_date).slice(0,10)}`,duration:`${x.days} day${Number(x.days)===1?"":"s"}`,from:String(x.start_date).slice(0,10),to:String(x.end_date).slice(0,10),reason:x.reason,note:x.decision_note||"No decision note",attachment:false,status:x.status[0]+x.status.slice(1).toLowerCase(),submitted:new Date(x.submitted_at).toLocaleString("en-IN"),sla:x.decided_at?`Decided ${new Date(x.decided_at).toLocaleString("en-IN")}`:"Awaiting manager decision"})));setNetworkError("")}catch(e){setNetworkError(e instanceof Error?e.message:"Unable to load leave data")}},[]);useEffect(()=>{loadRequests()},[loadRequests]);
+  const loadRequests=useCallback(async()=>{try{const [types,history]=await Promise.all([httpRequest<any>("/api/v2/leave-types"),httpRequest<any>("/api/v2/leaves")]);setApprover(types.approver?.name||"No manager assigned");setPolicyTypes(types.items.map((x:any,index:number)=>({...leavePolicy.types[index%leavePolicy.types.length],id:x.id,name:x.name,available:Number(x.balance??x.annual_quota),annual:Number(x.opening_balance??x.annual_quota),documentAfter:x.requires_document_after_days===null?undefined:Number(x.requires_document_after_days)})));setRequests(history.items.map((x:any)=>({id:x.id,type:x.leave_type,dates:`${String(x.start_date).slice(0,10)} to ${String(x.end_date).slice(0,10)}`,duration:`${x.days} day${Number(x.days)===1?"":"s"}`,from:String(x.start_date).slice(0,10),to:String(x.end_date).slice(0,10),reason:x.reason,note:x.decision_note||"No decision note",attachment:false,status:x.status[0]+x.status.slice(1).toLowerCase(),submitted:new Date(x.submitted_at).toLocaleString("en-IN"),sla:x.decided_at?`Decided ${new Date(x.decided_at).toLocaleString("en-IN")}`:"Awaiting manager decision"})));setNetworkError("")}catch(e){setNetworkError(e instanceof Error?e.message:"Unable to load leave data")}},[]);useEffect(()=>{loadRequests()},[loadRequests]);
   const validate = () => {
     const e: Errors = {};
     if (!type) e.type = "Select a leave type.";
@@ -232,7 +233,7 @@ export function LeaveApplication() {
           <h1>Your leave request is on its way</h1>
           <p>
             {days} day{days === 1 ? "" : "s"} of {selected?.name} has been sent
-            to {leavePolicy.approver}. Your balance now reserves this request as
+            to {approver}. Your balance now reserves this request as
             pending.
           </p>
           <div>
@@ -270,7 +271,7 @@ export function LeaveApplication() {
             </div>
             <span>
               <CalendarDays />
-              Approver: <b>{leavePolicy.approver}</b>
+              Approver: <b>{approver}</b>
             </span>
           </div>
           {networkError&&<div className="leave-error" role="alert"><AlertCircle/><div><b>Leave service unavailable</b><p>{networkError}</p></div></div>}
@@ -618,7 +619,7 @@ export function LeaveApplication() {
                 <b>
                   {detail.status === "Withdrawn"
                     ? "Withdrawn by employee"
-                    : `Awaiting ${detail.approver}`}
+                    : `Awaiting ${approver}`}
                 </b>
                 <small>
                   {detail.status === "Withdrawn"
