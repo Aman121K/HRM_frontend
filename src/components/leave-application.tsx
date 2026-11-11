@@ -21,7 +21,6 @@ import {
 } from "react";
 import {
   leavePolicy,
-  pendingLeaveRequests,
   type PendingLeave,
 } from "@/lib/leave-policy";
 import { useDialogFocus } from "@/lib/use-dialog-focus";
@@ -70,7 +69,7 @@ export function LeaveApplication() {
     [sent, setSent] = useState(false),
     [draftMessage, setDraftMessage] = useState(""),
     [requests, setRequests] = useState<PendingLeave[]>([]),
-    [policyTypes,setPolicyTypes]=useState(leavePolicy.types),
+    [policyTypes,setPolicyTypes]=useState<any[]>([]),
     [networkError,setNetworkError]=useState(""),
     [submitting,setSubmitting]=useState(false),
     [detail, setDetail] = useState<PendingLeave | null>(null),
@@ -149,7 +148,7 @@ export function LeaveApplication() {
       setDraftMessage("Draft restored from this device");
     } catch {}
   }, []);
-  const loadRequests=useCallback(async()=>{try{const [types,history]=await Promise.all([httpRequest<any>("/api/v2/leave-types"),httpRequest<any>("/api/v2/leaves")]);setApprover(types.approver?.name||"No manager assigned");setPolicyTypes(types.items.map((x:any,index:number)=>({...leavePolicy.types[index%leavePolicy.types.length],id:x.id,name:x.name,available:Number(x.balance??x.annual_quota),annual:Number(x.opening_balance??x.annual_quota),documentAfter:x.requires_document_after_days===null?undefined:Number(x.requires_document_after_days)})));setRequests(history.items.map((x:any)=>({id:x.id,type:x.leave_type,dates:`${String(x.start_date).slice(0,10)} to ${String(x.end_date).slice(0,10)}`,duration:`${x.days} day${Number(x.days)===1?"":"s"}`,from:String(x.start_date).slice(0,10),to:String(x.end_date).slice(0,10),reason:x.reason,note:x.decision_note||"No decision note",attachment:false,status:x.status[0]+x.status.slice(1).toLowerCase(),submitted:new Date(x.submitted_at).toLocaleString("en-IN"),sla:x.decided_at?`Decided ${new Date(x.decided_at).toLocaleString("en-IN")}`:"Awaiting manager decision"})));setNetworkError("")}catch(e){setNetworkError(e instanceof Error?e.message:"Unable to load leave data")}},[]);useEffect(()=>{loadRequests()},[loadRequests]);
+  const loadRequests=useCallback(async()=>{try{const [types,history]=await Promise.all([httpRequest<any>("/api/v2/leave-types"),httpRequest<any>("/api/v2/leaves")]);setApprover(types.approver?.name||"No manager assigned");const palette=["#18766e","#cb715f","#d4a43f","#527f91","#946b90","#587ab4","#69747c"];const sumDays=(typeName:string,status:string)=>history.items.filter((r:any)=>r.leave_type===typeName&&r.status===status).reduce((a:number,r:any)=>a+Number(r.days),0);setPolicyTypes(types.items.map((x:any,index:number)=>{const unpaid=/LOP|UNPAID/i.test(x.code||"");const open=Number(x.opening_balance??x.annual_quota);return {id:x.id,name:x.name,opening:open,carried:0,accrued:0,availed:sumDays(x.name,"APPROVED"),pending:sumDays(x.name,"PENDING"),available:Number(x.balance??x.annual_quota),annualEntitlement:Number(x.annual_quota),annual:open,paid:!unpaid,color:palette[index%palette.length],noticeDays:0,minDays:.5,maxDays:365,documentAfter:x.requires_document_after_days===null||x.requires_document_after_days===undefined?undefined:Number(x.requires_document_after_days),halfDay:true,negativeBalance:unpaid,sandwich:false,includeWeekends:false,includeHolidays:false,eligibility:"",accrual:"",expiry:"",approvalChain:[types.approver?.name||"Manager"]}}));setRequests(history.items.map((x:any)=>({id:x.id,type:x.leave_type,dates:`${String(x.start_date).slice(0,10)} to ${String(x.end_date).slice(0,10)}`,duration:`${x.days} day${Number(x.days)===1?"":"s"}`,from:String(x.start_date).slice(0,10),to:String(x.end_date).slice(0,10),reason:x.reason,note:x.decision_note||"No decision note",attachment:false,status:x.status[0]+x.status.slice(1).toLowerCase(),submitted:new Date(x.submitted_at).toLocaleString("en-IN"),sla:x.decided_at?`Decided ${new Date(x.decided_at).toLocaleString("en-IN")}`:"Awaiting manager decision"})));setNetworkError("")}catch(e){setNetworkError(e instanceof Error?e.message:"Unable to load leave data")}},[]);useEffect(()=>{loadRequests()},[loadRequests]);
   const validate = () => {
     const e: Errors = {};
     if (!type) e.type = "Select a leave type.";
@@ -254,7 +253,7 @@ export function LeaveApplication() {
           <ArrowLeft />
         </Link>
         <div>
-          <p className="eyebrow">TIME & LEAVE · {leavePolicy.year}</p>
+          <p className="eyebrow">TIME & LEAVE · {new Date().getFullYear()}</p>
           <h1>Apply for leave</h1>
           <p>
             Review eligibility, day calculation and balance impact before
@@ -527,23 +526,18 @@ export function LeaveApplication() {
               <div className="ledger-head">
                 <span>Leave type</span>
                 <span>Open</span>
-                <span>Carry</span>
-                <span>Accrued</span>
                 <span>Availed</span>
                 <span>Pending</span>
                 <span>Available</span>
               </div>
               {policyTypes
-                .filter((x) => x.id !== "unpaid")
+                .filter((x) => x.paid)
                 .map((x) => (
                   <div className="ledger-row" key={x.id}>
                     <b style={{ borderLeftColor: x.color }}>
                       {x.name}
-                      <small>{x.expiry}</small>
                     </b>
                     <span>{x.opening}d</span>
-                    <span>{x.carried}d</span>
-                    <span>{x.accrued}d</span>
                     <span>{x.availed}d</span>
                     <span>{x.pending}d</span>
                     <strong>{x.available}d</strong>

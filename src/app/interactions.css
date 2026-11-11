@@ -1343,7 +1343,7 @@
 .ledger-row {
   min-width: 470px;
   display: grid;
-  grid-template-columns: minmax(130px, 1.7fr) repeat(6, minmax(42px, 0.55fr));
+  grid-template-columns: minmax(130px, 1.7fr) repeat(4, minmax(42px, 0.55fr));
   align-items: center;
   gap: 5px;
 }
@@ -2681,7 +2681,7 @@
 .ledger-row {
   min-width: 470px;
   display: grid;
-  grid-template-columns: minmax(130px, 1.7fr) repeat(6, minmax(42px, 0.55fr));
+  grid-template-columns: minmax(130px, 1.7fr) repeat(4, minmax(42px, 0.55fr));
   align-items: center;
   gap: 5px;
 }

@@ -9,8 +9,8 @@ export type LeaveType = {
 
 // Tenant-owned policy data. In production this is resolved by tenant + legal entity + location + worker type.
 export const leavePolicy={
- tenantName:tenant.displayName,year:2026,approver:"Priya Nair",workweek:[1,2,3,4,5],
- holidays:[{date:"2026-08-15",name:"Independence Day"},{date:"2026-10-02",name:"Gandhi Jayanti"}],
+ tenantName:tenant.displayName,year:2026,approver:"your manager",workweek:[1,2,3,4,5],
+ holidays:[] as {date:string;name:string}[],
  types:[
   {id:"earned",name:"Earned / Privilege leave",opening:4,carried:3,accrued:11,availed:4,pending:2,available:12,annualEntitlement:18,paid:true,color:"#18766e",noticeDays:3,minDays:.5,maxDays:15,documentAfter:10,halfDay:true,negativeBalance:false,sandwich:true,includeWeekends:true,includeHolidays:true,eligibility:"Confirmed employees after 90 days",accrual:"1.5 days monthly, credited month-end",expiry:"Carried balance expires 31 Mar 2027",approvalChain:["Reporting manager","People Partner (over 10 days)"]},
   {id:"casual",name:"Casual leave",opening:0,carried:0,accrued:8,availed:2,pending:1,available:5,annualEntitlement:8,paid:true,color:"#cb715f",noticeDays:1,minDays:.5,maxDays:3,halfDay:true,negativeBalance:false,sandwich:false,includeWeekends:false,includeHolidays:false,eligibility:"All active employees from date of joining",accrual:"Annual grant on 1 January; prorated for joiners",expiry:"Unused balance expires 31 Dec 2026",approvalChain:["Reporting manager"]},
@@ -31,6 +31,6 @@ export const leavePolicy={
 
 export type PendingLeave={id:string;typeId:string;type:string;from:string;to:string;dates:string;days:number;duration:string;submitted:string;approver:string;status:"Pending with manager"|"Withdrawn";reason:string;note:string;attachment:boolean;sla:string};
 export const pendingLeaveRequests:PendingLeave[]=[
- {id:"LR-2048",typeId:"casual",type:"Casual leave",from:"2026-08-03",to:"2026-08-04",dates:"3–4 Aug 2026",days:2,duration:"2 days",submitted:"26 Jul 2026 · 10:42",approver:"Priya Nair",status:"Pending with manager",reason:"Personal commitment",note:"Family appointment; handover shared with Aisha.",attachment:false,sla:"Expected by 29 Jul · 2 business days"},
- {id:"LR-2031",typeId:"earned",type:"Earned / Privilege leave",from:"2026-08-17",to:"2026-08-19",dates:"17–19 Aug 2026",days:3,duration:"3 days",submitted:"21 Jul 2026 · 15:18",approver:"Priya Nair",status:"Pending with manager",reason:"Travel",note:"Project coverage confirmed with Rohan.",attachment:true,sla:"Expected by 28 Jul · overdue by 1 day"}
+ {id:"LR-2048",typeId:"casual",type:"Casual leave",from:"2026-08-03",to:"2026-08-04",dates:"3–4 Aug 2026",days:2,duration:"2 days",submitted:"26 Jul 2026 · 10:42",approver:"your manager",status:"Pending with manager",reason:"Personal commitment",note:"Family appointment; handover shared with Aisha.",attachment:false,sla:"Expected by 29 Jul · 2 business days"},
+ {id:"LR-2031",typeId:"earned",type:"Earned / Privilege leave",from:"2026-08-17",to:"2026-08-19",dates:"17–19 Aug 2026",days:3,duration:"3 days",submitted:"21 Jul 2026 · 15:18",approver:"your manager",status:"Pending with manager",reason:"Travel",note:"Project coverage confirmed with Rohan.",attachment:true,sla:"Expected by 28 Jul · overdue by 1 day"}
 ];
