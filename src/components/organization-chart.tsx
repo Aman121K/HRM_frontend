@@ -19,14 +19,84 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { employees, rootEmployeeId, type Employee } from "@/lib/org-data";
-import { tenant } from "@/lib/tenant";
+import { httpRequest } from "@/lib/http-client";
 import { useDialogFocus } from "@/lib/use-dialog-focus";
 
-const allIds = Object.keys(employees);
-const branchIds = allIds.filter((id) => employees[id].reports.length);
+type Employee = {
+  id: string; name: string; initials: string; title: string; department: string; location: string;
+  email: string; number: string; managerId?: string; reports: string[];
+};
+type ApiEmployee = { id: string; employeeNumber: string; fullName: string; workEmail: string; department: string | null;
+  designation: string | null; location: string | null; managerId: string | null; status: string };
 
+// Filled from the live brand directory before the chart renders.
+const ORG_ROOT = "__org";
+let employees: Record<string, Employee> = {};
+let rootEmployeeId = ORG_ROOT;
+let allIds: string[] = [];
+let branchIds: string[] = [];
+let layers = 0;
+let meId = "";
+
+function buildTree(items: ApiEmployee[]) {
+  const map: Record<string, Employee> = {};
+  for (const e of items) {
+    const initials = e.fullName.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+    map[e.id] = { id: e.id, name: e.fullName, initials, title: e.designation || "—", department: e.department || "General",
+      location: e.location || "—", email: e.workEmail, number: e.employeeNumber, managerId: e.managerId || undefined, reports: [] };
+  }
+  const roots: string[] = [];
+  for (const p of Object.values(map)) {
+    if (p.managerId && map[p.managerId] && p.managerId !== p.id) map[p.managerId].reports.push(p.id);
+    else { p.managerId = undefined; roots.push(p.id); }
+  }
+  for (const p of Object.values(map)) p.reports.sort((a, b) => map[a].name.localeCompare(map[b].name));
+  roots.sort((a, b) => map[b].reports.length - map[a].reports.length || map[a].name.localeCompare(map[b].name));
+  if (roots.length === 1) rootEmployeeId = roots[0];
+  else {
+    map[ORG_ROOT] = { id: ORG_ROOT, name: "Your organisation", initials: "ORG", title: `${roots.length} people at the top level`,
+      department: "Company", location: "All locations", email: "", number: "", reports: roots };
+    for (const r of roots) map[r].managerId = ORG_ROOT;
+    rootEmployeeId = ORG_ROOT;
+  }
+  employees = map;
+  allIds = Object.keys(map).filter((id) => id !== ORG_ROOT);
+  branchIds = Object.keys(map).filter((id) => map[id].reports.length);
+  const depth = (id: string, seen = 0): number => seen > 50 ? 0 : 1 + Math.max(0, ...map[id].reports.map((c) => depth(c, seen + 1)));
+  layers = rootEmployeeId === ORG_ROOT ? depth(ORG_ROOT) - 1 : depth(rootEmployeeId);
+}
+
+/** Org chart of the signed-in brand: only that brand's active employees, wired by their manager. */
 export function OrganizationChart() {
+  const [state, setState] = useState<"loading" | "ready" | "empty" | "error">("loading");
+  const [error, setError] = useState("");
+  useEffect(() => {
+    (async () => {
+      try {
+        const items: ApiEmployee[] = [];
+        for (let offset = 0; offset < 5000; offset += 200) {
+          const page = await httpRequest<{ items: ApiEmployee[]; total: number }>(`/api/v2/employees?limit=200&offset=${offset}`);
+          items.push(...page.items);
+          if (page.items.length < 200) break;
+        }
+        const me = await httpRequest<{ id: string }>("/api/v2/me").catch(() => null);
+        meId = me?.id || "";
+        const active = items.filter((e) => e.status === "ACTIVE");
+        if (!active.length) { setState("empty"); return; }
+        buildTree(active);
+        setState("ready");
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Couldn't load the organisation chart."); setState("error");
+      }
+    })();
+  }, []);
+  if (state === "loading") return <div className="org-page"><p className="org-results">Loading organisation chart…</p></div>;
+  if (state === "error") return <div className="org-page"><p className="core-error">{error}</p></div>;
+  if (state === "empty") return <div className="org-page"><p className="org-results">No active employees in this organisation yet.</p></div>;
+  return <OrganizationChartView />;
+}
+
+function OrganizationChartView() {
   const [expanded, setExpanded] = useState(new Set(branchIds));
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<Employee | null>(null);
@@ -124,22 +194,23 @@ export function OrganizationChart() {
     setTimeout(() => centerPerson(rootEmployeeId), 50);
   };
   const focusMe = () => {
-    setQuery("Vikas Tiwari");
-    setTimeout(() => centerPerson("vikas-tiwari"), 50);
+    if (!meId || !employees[meId]) return;
+    setQuery(employees[meId].name);
+    setTimeout(() => centerPerson(meId), 50);
   };
   const exportCsv = () => {
     const rows = [
-      ["Tenant", tenant.id],
-      ["Name", "Title", "Department", "Location", "Manager", "Status", "Email"],
-      ...visible.map((id) => {
+      ["Organisation chart"],
+      ["Employee ID", "Name", "Title", "Department", "Location", "Manager", "Email"],
+      ...visible.filter((id) => id !== ORG_ROOT).map((id) => {
         const p = employees[id];
         return [
+          p.number,
           p.name,
           p.title,
           p.department,
           p.location,
-          p.managerId ? employees[p.managerId].name : "",
-          p.status,
+          p.managerId && p.managerId !== ORG_ROOT ? employees[p.managerId].name : "",
           p.email,
         ];
       }),
@@ -149,7 +220,7 @@ export function OrganizationChart() {
       .join("\n");
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-    a.download = `${tenant.displayName.toLowerCase().replaceAll(" ", "-")}-visible-organization.csv`;
+    a.download = "visible-organization.csv";
     a.click();
     URL.revokeObjectURL(a.href);
   };
@@ -183,7 +254,7 @@ export function OrganizationChart() {
       <header className="org-heading">
         <div>
           <p className="eyebrow">
-            PEOPLE MAP · {tenant.displayName.toUpperCase()}
+            PEOPLE MAP
           </p>
           <h1>Organization chart</h1>
           <p>
@@ -240,7 +311,7 @@ export function OrganizationChart() {
             <strong>{allIds.length}</strong>people
           </span>
           <span>
-            <strong>4</strong>layers
+            <strong>{layers}</strong>layers
           </span>
           <span>
             <strong>
@@ -253,20 +324,6 @@ export function OrganizationChart() {
               {new Set(allIds.map((id) => employees[id].location)).size}
             </strong>
             locations
-          </span>
-        </div>
-        <div className="org-legend">
-          <span>
-            <i className="legend-dot present" />
-            Present
-          </span>
-          <span>
-            <i className="legend-dot remote" />
-            Remote
-          </span>
-          <span>
-            <i className="legend-dot away" />
-            Away
           </span>
         </div>
       </div>
@@ -340,9 +397,6 @@ export function OrganizationChart() {
               <p className="eyebrow">EMPLOYEE PROFILE</p>
               <h2 id="employee-name">{selected.name}</h2>
               <p>{selected.title}</p>
-              <span className={`status-chip ${selected.status.toLowerCase()}`}>
-                {selected.status}
-              </span>
             </div>
             <dl className="employee-facts">
               <div>
@@ -359,7 +413,7 @@ export function OrganizationChart() {
               <div>
                 <dt>Manager</dt>
                 <dd>
-                  {selected.managerId ? (
+                  {selected.managerId && selected.managerId !== ORG_ROOT ? (
                     <button
                       onClick={() =>
                         setSelected(employees[selected.managerId!])
@@ -368,7 +422,7 @@ export function OrganizationChart() {
                       {employees[selected.managerId].name}
                     </button>
                   ) : (
-                    "Board of Directors"
+                    "—"
                   )}
                 </dd>
               </div>
@@ -381,8 +435,8 @@ export function OrganizationChart() {
                 <dd>{selected.email}</dd>
               </div>
               <div>
-                <dt>Phone</dt>
-                <dd>{selected.phone}</dd>
+                <dt>Employee ID</dt>
+                <dd>{selected.number}</dd>
               </div>
             </dl>
             {selected.reports.length > 0 && (
@@ -406,9 +460,9 @@ export function OrganizationChart() {
                 <Clipboard size={16} />
                 {copied ? "Copied" : "Copy email"}
               </button>
-              <Link href={`/people/${selected.id}`}>
+              <Link href="/directory">
                 <Users size={16} />
-                View profile
+                Open directory
               </Link>
             </div>
           </aside>
@@ -442,7 +496,7 @@ function OrgNode({
         <button
           id={`person-${id}`}
           className={`person-card ${matches.has(id) ? "match" : ""}`}
-          onClick={() => select(p)}
+          onClick={() => id !== ORG_ROOT && select(p)}
           aria-label={`Open details for ${p.name}`}
         >
           <span
@@ -456,9 +510,7 @@ function OrgNode({
             <em>{p.title}</em>
             <span>
               <MapPin size={11} />
-              {p.location} ·{" "}
-              <i className={`legend-dot ${p.status.toLowerCase()}`} />
-              {p.status}
+              {p.location}
             </span>
           </span>
         </button>
