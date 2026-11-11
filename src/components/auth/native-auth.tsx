@@ -55,7 +55,7 @@ export function RecoveryCodes({ codes, onDone, doneLabel = "I've saved these cod
   const text = codes.join("\n");
   const download = () => {
     const url = URL.createObjectURL(new Blob([`ClanChief recovery codes\nEach code works once.\n\n${text}\n`], { type: "text/plain" }));
-    const link = Object.assign(document.createElement("a"), { href: url, download: "northstar-recovery-codes.txt" });
+    const link = Object.assign(document.createElement("a"), { href: url, download: "clanchief-recovery-codes.txt" });
     document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000);
   };
   return (

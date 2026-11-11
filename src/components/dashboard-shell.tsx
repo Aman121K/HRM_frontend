@@ -27,7 +27,6 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { peopleOnLeave, peopleWorkingFromHome, week } from "@/lib/dashboard-data";
 import { caseApi, dueLabel, loadDefinitions, relativeTime } from "@/lib/cases";
 import { caseUi } from "@/lib/case-ui";
 import { formatMinutes, useAttendanceToday } from "@/lib/attendance-client";
@@ -125,6 +124,20 @@ export function DashboardShell() {
       })
       .catch(() => setTasks({ total: 0, items: [] }));
   }, []);
+  type DashLeaveType = { id: string; code: string; name: string; annual_quota: string; balance: number | null };
+  type OnLeave = { employeeId: string; name: string; department: string | null; designation: string | null; leaveType: string; endDate: string };
+  type Slip = { period: string; label: string; net: number; publishedAt: string | null };
+  const [leaveTypes, setLeaveTypes] = useState<DashLeaveType[] | null>(null);
+  const [onLeave, setOnLeave] = useState<OnLeave[] | null>(null);
+  const [latestSlip, setLatestSlip] = useState<Slip | null | undefined>(undefined);
+  useEffect(() => {
+    httpRequest<{ items: DashLeaveType[] }>("/api/v2/leave-types").then((d) => setLeaveTypes(d.items)).catch(() => setLeaveTypes([]));
+    httpRequest<{ items: OnLeave[] }>("/api/v2/leaves/today").then((d) => setOnLeave(d.items)).catch(() => setOnLeave([]));
+    httpRequest<{ payslips: Slip[] }>("/api/v2/payroll/me").then((d) => setLatestSlip(d.payslips[0] || null)).catch(() => setLatestSlip(null));
+  }, []);
+  const [nowTick, setNowTick] = useState(() => new Date());
+  useEffect(() => { const t = window.setInterval(() => setNowTick(new Date()), 60000); return () => window.clearInterval(t); }, []);
+  const dayPct = Math.min(100, Math.max(0, ((nowTick.getHours() * 60 + nowTick.getMinutes() - 540) / 540) * 100));
   const [shiftToday, setShiftToday] = useState<{ status: string; weekHours: number; shift: { name: string; startTime: string; endTime: string; breakMinutes: number } | null; next: { name: string; date: string } | null } | null>(null);
   useEffect(() => { httpRequest<any>("/api/v2/roster/me/today").then(setShiftToday).catch(() => {}); }, []);
   const [tasks, setTasks] = useState<{ total: number; items: { id: string; type: string; title: string; person: string; due: string; urgent: boolean; href: string }[] } | null>(null);
@@ -398,38 +411,23 @@ export function DashboardShell() {
                   <div className="expected" />
                   <div
                     className="elapsed"
-                    style={{ width: punchedOut ? "93%" : "42%" }}
+                    style={{ width: `${dayPct}%` }}
                   />
                   <i className="punch start" />
                   <i
                     className="now"
-                    style={{ left: punchedOut ? "93%" : "42%" }}
+                    style={{ left: `${dayPct}%` }}
                   />
                 </div>
                 <div className="event-labels">
                   <span>{attendance.firstIn ? <><b>{timeOf(attendance.firstIn.occurredAt)}</b> Punched in</> : "No punch recorded"}</span>
                   <span
                     className="now-label"
-                    style={{ left: punchedOut ? "93%" : "42%" }}
+                    style={{ left: `${dayPct}%` }}
                   >
-                    {punchedOut ? "5:38 PM" : "Now · 12:50"}
+                    {`Now · ${timeOf(nowTick.toISOString())}`}
                   </span>
                 </div>
-              </div>
-              <div className="week-rhythm">
-                <span>This week</span>
-                {week.map((d) => (
-                  <div key={d.day}>
-                    <small>{d.day}</small>
-                    <i>
-                      <b
-                        className={d.tone}
-                        style={{ width: `${(d.value / 9) * 100}%` }}
-                      />
-                    </i>
-                    <em>{d.value}h</em>
-                  </div>
-                ))}
               </div>
             </section>
 
@@ -518,41 +516,22 @@ export function DashboardShell() {
                 </Link>
               </div>
               <div className="leave-grid">
-                <div>
-                  <span className="leave-ring teal-ring">
-                    <b>12</b>
-                  </span>
-                  <p>
-                    Earned leave<small>of 18 days</small>
-                  </p>
-                </div>
-                <div>
-                  <span className="leave-ring coral-ring">
-                    <b>5</b>
-                  </span>
-                  <p>
-                    Casual leave<small>of 8 days</small>
-                  </p>
-                </div>
-                <div>
-                  <span className="leave-ring gold-ring">
-                    <b>7</b>
-                  </span>
-                  <p>
-                    Sick leave<small>of 10 days</small>
-                  </p>
-                </div>
+                {leaveTypes === null ? <p className="task-empty">Loading…</p>
+                  : ["EL", "CL", "SL"].map((code, k) => {
+                    const t = leaveTypes.find((x) => x.code === code);
+                    if (!t) return null;
+                    const left = t.balance ?? Number(t.annual_quota);
+                    return (
+                      <div key={code}>
+                        <span className={`leave-ring ${["teal", "coral", "gold"][k]}-ring`}><b>{Number.isInteger(left) ? left : left.toFixed(1)}</b></span>
+                        <p>{t.name}<small>{t.balance === null ? `of ${Number(t.annual_quota)} days` : "days left"}</small></p>
+                      </div>
+                    );
+                  })}
+                {leaveTypes && !leaveTypes.some((x) => ["EL", "CL", "SL"].includes(x.code)) && <p className="task-empty">No leave types set up yet.</p>}
               </div>
               <div className="holiday">
-                <span className="calendar-tile">
-                  <b>15</b>
-                  <small>AUG</small>
-                </span>
-                <p>
-                  <small>UPCOMING HOLIDAY</small>
-                  <b>Independence Day</b>
-                  <span>Saturday · in 19 days</span>
-                </p>
+                <p><small>PLAN AHEAD</small><b>Request time off</b><span>Your manager gets it for approval.</span></p>
                 <Link href="/leave/apply">Plan leave</Link>
               </div>
             </section>
@@ -600,10 +579,10 @@ export function DashboardShell() {
             <section className="team-panel panel">
               <div className="section-title">
                 <div>
-                  <p className="eyebrow">COMPANY AVAILABILITY · {peopleOnLeave.length + peopleWorkingFromHome.length} PEOPLE</p>
-                  <h2>Who’s away &amp; remote today</h2>
+                  <p className="eyebrow">COMPANY AVAILABILITY · {onLeave?.length ?? 0} PEOPLE</p>
+                  <h2>Who’s away today</h2>
                 </div>
-                <Link className="text-action" href="/people/organization-chart">
+                <Link className="text-action" href="/directory/organization-chart">
                   View organization →
                 </Link>
               </div>
@@ -611,29 +590,15 @@ export function DashboardShell() {
                 <section className="availability-group leave-group" aria-labelledby="leave-today-heading">
                   <header>
                     <span className="availability-mark"><CalendarDays size={16} /></span>
-                    <div><h3 id="leave-today-heading">On leave today</h3><p>{peopleOnLeave.length} colleagues away</p></div>
+                    <div><h3 id="leave-today-heading">On leave today</h3><p>{onLeave === null ? "Loading…" : `${onLeave.length} colleague${onLeave.length === 1 ? "" : "s"} away`}</p></div>
                   </header>
                   <div className="availability-list">
-                    {peopleOnLeave.map((person) => (
-                      <Link href="/people/organization-chart" key={person.name}>
-                        <span className={`avatar ${person.color}`}>{person.initials}</span>
-                        <span><b>{person.name}</b><small>{person.role}</small></span>
-                        <em>{person.leaveType}<small>{person.returns}</small></em>
-                      </Link>
-                    ))}
-                  </div>
-                </section>
-                <section className="availability-group remote-group" aria-labelledby="wfh-today-heading">
-                  <header>
-                    <span className="availability-mark"><Home size={16} /></span>
-                    <div><h3 id="wfh-today-heading">Working from home</h3><p>{peopleWorkingFromHome.length} colleagues remote</p></div>
-                  </header>
-                  <div className="availability-list">
-                    {peopleWorkingFromHome.map((person) => (
-                      <Link href="/people/organization-chart" key={person.name}>
-                        <span className={`avatar ${person.color}`}>{person.initials}</span>
-                        <span><b>{person.name}</b><small>{person.role}</small></span>
-                        <em>{person.location}<small>{person.availability}</small></em>
+                    {onLeave?.length === 0 && <p className="task-empty"><Check size={15} /> Everyone is in today.</p>}
+                    {onLeave?.map((person) => (
+                      <Link href="/directory/organization-chart" key={person.employeeId}>
+                        <span className="avatar">{person.name.split(" ").filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase()}</span>
+                        <span><b>{person.name}</b><small>{person.department || person.designation || ""}</small></span>
+                        <em>{person.leaveType}<small>Back after {new Date(`${person.endDate}T00:00:00`).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</small></em>
                       </Link>
                     ))}
                   </div>
@@ -645,20 +610,18 @@ export function DashboardShell() {
               <div className="panel-head inverse">
                 <div>
                   <p className="eyebrow">PAYROLL</p>
-                  <h2>June salary</h2>
+                  <h2>{latestSlip ? latestSlip.label : "Salary"}</h2>
                 </div>
                 <WalletCards size={22} />
               </div>
               <div className="net-pay">
                 <small>NET PAY</small>
-                <strong>₹1,24,860</strong>
-                <span>Credited 30 Jun 2026</span>
+                <strong>{latestSlip ? `₹${Math.round(latestSlip.net).toLocaleString("en-IN")}` : latestSlip === null ? "—" : "…"}</strong>
+                <span>{latestSlip ? `Payslip for ${latestSlip.label}` : latestSlip === null ? "No payslip published yet" : "Loading…"}</span>
               </div>
               <div className="payroll-next">
-                <span>
-                  Next payroll<small>31 Jul · 4 days</small>
-                </span>
-                <Link href="/payroll/payslips/2026-06">Download payslip</Link>
+                <span>Payslips<small>{latestSlip ? "Latest published" : "Will appear here once payroll is published"}</small></span>
+                <Link href={latestSlip ? `/payroll/payslips/${latestSlip.period}` : "/payroll"}>{latestSlip ? "Download payslip" : "Open payroll"}</Link>
               </div>
             </section>
 
@@ -674,24 +637,7 @@ export function DashboardShell() {
                   See all →
                 </Link>
               </div>
-              <Link href="/announcements" className="feature-news">
-                <span className="news-date">
-                  30<small>JUL</small>
-                </span>
-                <div>
-                  <small>TOWN HALL · 4:00 PM</small>
-                  <h3>Quarterly all-hands</h3>
-                  <p>Join leadership for company updates and a live Q&A.</p>
-                </div>
-              </Link>
-              <Link href="/announcements" className="news-row">
-                <span className="news-symbol coral-bg">✦</span>
-                <div>
-                  <small>ANNOUNCEMENT</small>
-                  <b>New parental leave policy</b>
-                  <p>More flexibility, effective 1 August.</p>
-                </div>
-              </Link>
+              <p className="task-empty"><Check size={15} /> No announcements yet.</p>
             </section>
           </div>
           <DashboardPulse />
@@ -808,7 +754,7 @@ export function DashboardShell() {
             <button className="flow-close" aria-label="Close camera" onClick={closeCamera}><X size={18} /></button>
             <p className="eyebrow">ATTENDANCE CHECK-IN</p>
             <h2 id="camera-dialog-title">Take your punch-in photo</h2>
-            <p className="camera-intro">Center your face in the frame. Your photo stays in this local demo and appears beside today’s attendance.</p>
+            <p className="camera-intro">Center your face in the frame. Your photo is attached to this punch for attendance verification.</p>
             <div className={`camera-frame ${cameraError ? "has-error" : ""}`}>
               <video ref={videoRef} muted playsInline aria-label="Live front-facing camera preview" />
               {cameraBusy && <div className="camera-state"><i /><span>Starting camera…</span></div>}
